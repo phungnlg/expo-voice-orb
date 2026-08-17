@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LUMEN - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "text-secondary": "#A0A0B4",
+                        "surface-tint": "#bac3ff",
+                        "secondary-container": "#04b4a2",
+                        "on-secondary-container": "#003f38",
+                        "on-surface-variant": "#c4c5d7",
+                        "accent-fill": "#2E45B8",
+                        "on-primary-container": "#f4f2ff",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "surface-bright": "#393841",
+                        "secondary": "#4fdbc8",
+                        "on-surface": "#e4e1ed",
+                        "surface-container-lowest": "#0d0d15",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#005048",
+                        "surface-inset": "#20202E",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#0031c4",
+                        "primary-fixed-dim": "#bac3ff",
+                        "success": "#34D98A",
+                        "on-primary": "#00218d",
+                        "surface-dim": "#13131b",
+                        "surface-container-highest": "#34343d",
+                        "outline": "#8e8fa1",
+                        "background": "#0E0E16", // Custom for prompt
+                        "text-hint": "#6E6E82",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-container-low": "#1b1b23",
+                        "primary-fixed": "#dee1ff",
+                        "on-secondary-fixed": "#00201c",
+                        "inverse-on-surface": "#302f39",
+                        "on-tertiary-container": "#fff1eb",
+                        "on-background": "#e4e1ed",
+                        "warning": "#FFC53D",
+                        "text-primary": "#EAEAF5",
+                        "on-secondary": "#003731",
+                        "on-error": "#690005",
+                        "surface-variant": "#34343d",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "secondary-fixed": "#71f8e4",
+                        "surface-container-high": "#292932",
+                        "primary-container": "#4361ee",
+                        "on-tertiary": "#562000",
+                        "surface-container": "#1f1f27",
+                        "inverse-surface": "#e4e1ed",
+                        "border-hairline": "#2A2A3A",
+                        "primary": "#bac3ff",
+                        "outline-variant": "#444655",
+                        "danger": "#FF6369",
+                        "on-tertiary-fixed": "#341100",
+                        "inverse-primary": "#2e4edc",
+                        "tertiary-container": "#ba4e00",
+                        "tertiary": "#ffb692",
+                        "surface": "#171722",
+                        "on-primary-fixed": "#001159",
+                        "accent-dark": "#93A6FF",
+                        "accent": "#4361EE"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "top-inset": "59px",
+                        "base": "8px",
+                        "bottom-inset": "34px",
+                        "gutter": "16px",
+                        "edge-margin": "20px"
+                    },
+                    fontFamily: {
+                        "label-14": ["Plus Jakarta Sans"],
+                        "body-16": ["Plus Jakarta Sans"],
+                        "display-32": ["Space Grotesk"],
+                        "numeral-data": ["Space Grotesk"],
+                        "caption-13": ["Plus Jakarta Sans"],
+                        "wordmark-caps": ["Space Grotesk"],
+                        "title-20": ["Plus Jakarta Sans"]
+                    },
+                    fontSize: {
+                        "label-14": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+                        "body-16": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "display-32": ["32px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "numeral-data": ["16px", { lineHeight: "24px", fontWeight: "500" }],
+                        "caption-13": ["13px", { lineHeight: "18px", fontWeight: "500" }],
+                        "wordmark-caps": ["14px", { lineHeight: "20px", letterSpacing: "0.1em", fontWeight: "700" }],
+                        "title-20": ["20px", { lineHeight: "28px", fontWeight: "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0E0E16; color: #EAEAF5; }
+        .slider-thumb::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #EAEAF5;
+            cursor: pointer;
+        }
+        .toggle-checkbox:checked {
+            background-color: #93A6FF;
+            border-color: #93A6FF;
+        }
+        .toggle-checkbox:checked::after {
+            transform: translateX(100%);
+            border-color: #93A6FF;
+        }
+        .toggle-checkbox::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background antialiased min-h-screen flex flex-col pb-[100px]">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-edge-margin h-[top-inset] w-full z-50 bg-background transition-opacity duration-300">
+<div class="flex items-center gap-2 text-text-primary">
+<span class="material-symbols-outlined text-primary">blur_on</span>
+<span class="font-wordmark-caps text-wordmark-caps tracking-widest text-text-primary">LUMEN</span>
+</div>
+<div class="bg-accent/10 px-3 py-1 rounded-full border border-accent/20">
+<span class="font-label-14 text-label-14 text-accent-dark">Idle</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-edge-margin mt-8 flex flex-col gap-8">
+<!-- Header -->
+<h1 class="font-display-32 text-display-32 text-text-primary">Settings</h1>
+<!-- Performance Section -->
+<section class="flex flex-col gap-4">
+<h2 class="font-title-20 text-title-20 text-text-secondary">Performance</h2>
+<div class="bg-surface border border-border-hairline rounded-xl overflow-hidden flex flex-col">
+<!-- Slider Row -->
+<div class="bg-surface-inset p-4 flex flex-col gap-3 border-b border-border-hairline">
+<div class="flex justify-between items-center">
+<span class="font-body-16 text-body-16 text-text-primary">Particle count</span>
+<span class="font-numeral-data text-numeral-data text-accent-dark">240</span>
+</div>
+<div class="relative w-full h-2 bg-surface-inset rounded-full overflow-hidden border border-border-hairline">
+<div class="absolute top-0 left-0 h-full bg-accent-dark w-[60%] rounded-full"></div>
+</div>
+</div>
+<!-- FPS Toggle Row -->
+<div class="bg-surface-inset p-4 flex justify-between items-center border-b border-border-hairline">
+<span class="font-body-16 text-body-16 text-text-primary">Show FPS overlay</span>
+<div class="flex items-center gap-4">
+<span class="font-numeral-data text-numeral-data text-accent-dark drop-shadow-[0_0_8px_rgba(147,166,255,0.4)]">59.8 fps</span>
+<div class="relative inline-block w-10 h-6 align-middle select-none">
+<input checked="" class="toggle-checkbox absolute block w-10 h-6 rounded-full bg-surface-inset border border-border-hairline appearance-none cursor-pointer" type="checkbox"/>
+</div>
+</div>
+</div>
+<!-- Reduce Motion Toggle Row -->
+<div class="bg-surface-inset p-4 flex justify-between items-center">
+<span class="font-body-16 text-body-16 text-text-primary">Reduce motion</span>
+<div class="relative inline-block w-10 h-6 align-middle select-none">
+<input class="toggle-checkbox absolute block w-10 h-6 rounded-full bg-surface-inset border border-border-hairline appearance-none cursor-pointer" type="checkbox"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Feedback Section -->
+<section class="flex flex-col gap-4">
+<h2 class="font-title-20 text-title-20 text-text-secondary">Feedback</h2>
+<div class="bg-surface border border-border-hairline rounded-xl overflow-hidden">
+<div class="bg-surface-inset p-4 flex justify-between items-center">
+<span class="font-body-16 text-body-16 text-text-primary">Haptics</span>
+<div class="relative inline-block w-10 h-6 align-middle select-none">
+<input checked="" class="toggle-checkbox absolute block w-10 h-6 rounded-full bg-surface-inset border border-border-hairline appearance-none cursor-pointer" type="checkbox"/>
+</div>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="flex flex-col gap-4">
+<h2 class="font-title-20 text-title-20 text-text-secondary">About</h2>
+<div class="bg-surface border border-border-hairline rounded-xl overflow-hidden cursor-pointer hover:bg-surface-inset transition-colors">
+<div class="bg-surface-inset p-4 flex justify-between items-center">
+<span class="font-body-16 text-body-16 text-text-primary">Lumen Orb Lab v0.1.0</span>
+<span class="material-symbols-outlined text-text-hint">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full h-[bottom-inset] flex justify-around items-center px-edge-margin bg-surface border-t border-border-hairline z-50 pt-2 pb-6">
+<div class="flex flex-col items-center justify-center gap-1 text-text-hint hover:text-primary transition-colors cursor-pointer w-16">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">radio_button_checked</span>
+<span class="font-label-14 text-[10px]">Orb</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-1 text-text-hint hover:text-primary transition-colors cursor-pointer w-16">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">tune</span>
+<span class="font-label-14 text-[10px]">Lab</span>
+</div>
+<div class="flex flex-col items-center justify-center gap-1 text-accent-dark hover:text-primary transition-colors cursor-pointer w-16">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-14 text-[10px]">Settings</span>
+</div>
+</nav>
+</body></html>

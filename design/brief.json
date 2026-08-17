@@ -1,0 +1,73 @@
+{
+  "title": "Lumen Orb Lab",
+  "slug": "lumen-orb-lab",
+  "domain": "other",
+  "style": "bright",
+  "features": [
+    "Animated voice-assistant orb: circular particle field around a central fluid waveform ring (Gemini Live direction)",
+    "7 behavioral states: Idle, Activated, Listening, Processing, Speaking, Whisper, Completion/return to idle",
+    "Audio-reactive: particles and waveform react to normalized 0..1 amplitude input",
+    "Whisper state: softer restrained animation + haptic pulse before playback",
+    "Smooth blended state transitions, no hard loop swaps",
+    "Demo harness: state trigger controls",
+    "Mock amplitude generator: sine, noise, recorded envelope sources",
+    "Transition tuner: per-transition duration and curve",
+    "Performance settings: particle count, FPS stats, haptics toggle"
+  ],
+  "screenCount": 11,
+  "sharedComponents": {
+    "bottomTabBar": {
+      "tabs": ["Orb", "Lab", "Settings"],
+      "note": "3 tabs, rounded outline icons: Orb = circle-dot icon, Lab = sliders icon, Settings = gear icon. Active tab in accent-dark #93A6FF, inactive in text-2 #A0A0B4. Flat dark bar on surface #171722, hairline top border #2A2A3A."
+    },
+    "statusBar": "Top bar: small 'LUMEN' wordmark left in Space Grotesk caps, current orb state chip right (pill, accentTint bg, accent-dark text)",
+    "controls": "Primary button: pill, accent-fill #2E45B8 with white label. Secondary: outline #2A2A3A, text-1 label. Chip: pill, surface-2 #20202E, accent-dark text when selected. Slider: track #20202E, fill accent-dark, round thumb. Card: 20px radius, surface #171722, hairline border #2A2A3A."
+  },
+  "screens": [
+    {"name": "onboarding", "purpose": "Intro: what the orb demo shows, start CTA", "content": "Full-screen dark hero with a large glowing idle orb (indigo->aqua gradient particle ring), title 'Meet the Lumen orb', one-line subtitle about 7 audio-reactive states, primary CTA 'Enter the lab'", "group": "onboarding", "nav": "none", "states": ["default"]},
+    {"name": "orb-idle", "purpose": "Orb stage in Idle state", "content": "Centered large orb: circular field of small indigo particles around a calm thin waveform ring, subtle glow, state chip 'Idle'. Below: caption 'calm continuous drift' and a small amplitude readout at 0.02", "group": "core", "nav": "Orb", "states": ["default"]},
+    {"name": "orb-activated", "purpose": "Orb acknowledges wake", "content": "Same stage, orb brightened with an expanding ring pulse, particles pulled slightly outward, state chip 'Activated', caption 'wake acknowledged'", "group": "core", "nav": "Orb", "states": ["default"]},
+    {"name": "orb-listening", "purpose": "Audio-reactive listening state", "content": "Orb with waveform ring visibly modulated by voice amplitude (fluid asymmetric ring), particles rippling, live amplitude meter bar 0.64, state chip 'Listening'", "group": "core", "nav": "Orb", "states": ["default"]},
+    {"name": "orb-processing", "purpose": "Thinking state", "content": "Orb with particles orbiting in a slow swirl trail, waveform ring collapsed to a rotating arc, state chip 'Processing', caption 'thinking'", "group": "core", "nav": "Orb", "states": ["default"]},
+    {"name": "orb-speaking", "purpose": "Speaking state driven by TTS amplitude", "content": "Orb with bold fluid waveform ring pulsing outward in aqua #14B8A6 highlights, particles radiating gently, TTS amplitude meter 0.71, state chip 'Speaking'", "group": "core", "nav": "Orb", "states": ["default"]},
+    {"name": "orb-whisper", "purpose": "Whisper state, softer + haptic pulse", "content": "Dimmed restrained orb, smaller amplitude ring, muted glow, state chip 'Whisper', small haptic icon with caption 'haptic pulse fired before playback', amplitude 0.18", "group": "core", "nav": "Orb", "states": ["default"]},
+    {"name": "state-lab", "purpose": "Trigger any state, watch transitions", "content": "Grid of 7 state trigger buttons (Idle, Activated, Listening, Processing, Speaking, Whisper, Complete), current state highlighted, mini orb preview on top, transition log list with timestamps (e.g. 'Listening -> Processing, 420ms blend')", "group": "core", "nav": "Lab", "states": ["default"]},
+    {"name": "amplitude-lab", "purpose": "Mock normalized amplitude generator", "content": "Live scrolling waveform preview of generated amplitude, source segmented control: Sine / Noise / Envelope, sliders for frequency, gain, smoothing, numeric readout 'amp 0.42', note 'feeds the orb the same 0..1 stream your audio pipeline will'", "group": "core", "nav": "Lab", "states": ["default"]},
+    {"name": "transition-tuner", "purpose": "Tune per-transition duration + curve", "content": "List of transitions (Idle->Activated, Activated->Listening, Listening->Processing, Processing->Speaking, Speaking->Whisper, Any->Idle) each with duration stepper (ms) and easing curve picker chip (easeInOut, spring), small curve thumbnail", "group": "detail", "nav": "Settings", "states": ["default"]},
+    {"name": "settings", "purpose": "Performance + demo options", "content": "Grouped rows: particle count slider (default 240), show FPS overlay toggle (59.8 fps shown), haptics toggle, reduce motion toggle, about row with version", "group": "settings", "nav": "Settings", "states": ["default"]}
+  ],
+  "designSystem": {
+    "variant": "A",
+    "theme": "dark",
+    "frame": "393x852 mobile (iPhone 16/17), top inset ~59px, bottom inset ~34px",
+    "color": {
+      "background": "#0E0E16",
+      "surface": "#171722",
+      "surfaceAlt": "#20202E",
+      "accent": "#4361EE",
+      "accentFill": "#2E45B8",
+      "accentDark": "#93A6FF",
+      "accentTint": "rgba(147,166,255,0.14)",
+      "accentPressed": "#A9B8FF",
+      "support": "#14B8A6",
+      "text": {"primary": "#EAEAF5", "secondary": "#A0A0B4", "tertiary": "#6E6E82"},
+      "border": "#2A2A3A",
+      "success": "#34D98A", "warning": "#FFC53D", "danger": "#FF6369"
+    },
+    "type": {
+      "fontFamily": "Plus Jakarta Sans",
+      "displayFamily": "Space Grotesk",
+      "numeralFamily": "Space Grotesk",
+      "display": "32 / 700 / -0.02em",
+      "title": "20 / 600",
+      "body": "16 / 400",
+      "label": "14 / 500",
+      "caption": "13 / 500"
+    },
+    "radius": {"card": 20, "control": 14, "input": 12, "pill": 999},
+    "spacing": "8pt scale, screen edge padding 20px",
+    "elevation": "soft glow only: orb glow = accent-dark at low alpha, cards flat with hairline border, no hard shadows",
+    "icons": "rounded outline (Lucide style), 24px, ~1.75 stroke, one set only",
+    "a11y": "text-1 #EAEAF5 on bg/surface >=4.5:1; white labels only on accentFill #2E45B8; accent-dark #93A6FF for icons/active states on dark; tap targets >=44pt"
+  }
+}

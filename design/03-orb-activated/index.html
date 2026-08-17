@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumen - Activated</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#bac3ff",
+                        "surface": "#171722",
+                        "surface-container-lowest": "#0d0d15",
+                        "on-secondary-container": "#003f38",
+                        "tertiary": "#ffb692",
+                        "surface-inset": "#20202E",
+                        "on-tertiary": "#562000",
+                        "outline-variant": "#444655",
+                        "surface-tint": "#bac3ff",
+                        "text-primary": "#EAEAF5",
+                        "border-hairline": "#2A2A3A",
+                        "on-primary": "#00218d",
+                        "primary-container": "#4361ee",
+                        "on-secondary": "#003731",
+                        "success": "#34D98A",
+                        "on-secondary-fixed-variant": "#005048",
+                        "on-secondary-fixed": "#00201c",
+                        "on-primary-container": "#f4f2ff",
+                        "inverse-on-surface": "#302f39",
+                        "text-hint": "#6E6E82",
+                        "surface-container": "#1f1f27",
+                        "background": "#13131b",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#bac3ff",
+                        "surface-variant": "#34343d",
+                        "secondary-fixed": "#71f8e4",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "on-error": "#690005",
+                        "accent-dark": "#93A6FF",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-primary-fixed": "#001159",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#13131b",
+                        "surface-container-low": "#1b1b23",
+                        "accent-fill": "#2E45B8",
+                        "primary-fixed": "#dee1ff",
+                        "on-background": "#e4e1ed",
+                        "text-secondary": "#A0A0B4",
+                        "on-tertiary-fixed": "#341100",
+                        "tertiary-container": "#ba4e00",
+                        "warning": "#FFC53D",
+                        "surface-bright": "#393841",
+                        "inverse-primary": "#2e4edc",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#c4c5d7",
+                        "inverse-surface": "#e4e1ed",
+                        "on-surface": "#e4e1ed",
+                        "surface-container-high": "#292932",
+                        "secondary-container": "#04b4a2",
+                        "danger": "#FF6369",
+                        "on-tertiary-container": "#fff1eb",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "secondary": "#4fdbc8",
+                        "surface-container-highest": "#34343d",
+                        "outline": "#8e8fa1",
+                        "on-primary-fixed-variant": "#0031c4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "base": "8px",
+                        "edge-margin": "20px",
+                        "bottom-inset": "34px",
+                        "top-inset": "59px"
+                    },
+                    "fontFamily": {
+                        "numeral-data": ["Space Grotesk"],
+                        "label-14": ["Plus Jakarta Sans"],
+                        "display-32": ["Space Grotesk"],
+                        "wordmark-caps": ["Space Grotesk"],
+                        "title-20": ["Plus Jakarta Sans"],
+                        "caption-13": ["Plus Jakarta Sans"],
+                        "body-16": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "numeral-data": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "label-14": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "display-32": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "wordmark-caps": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "title-20": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "caption-13": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "body-16": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0E0E16; /* Fallback if utility fails, but we'll use bg-[color] */
+        }
+        /* Hide scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        html {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#0E0E16] text-text-primary antialiased h-screen w-full flex flex-col overflow-hidden relative">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-edge-margin h-[top-inset] z-50 bg-[#0E0E16] transition-opacity duration-300">
+<div class="flex items-center gap-2 font-wordmark-caps text-wordmark-caps text-text-primary tracking-widest hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-primary">blur_on</span>
+            LUMEN
+        </div>
+<div class="px-3 py-1 rounded-full bg-accent-dark/10 border border-accent-dark/20 flex items-center justify-center">
+<span class="font-label-14 text-label-14 text-accent-dark">Activated</span>
+</div>
+</header>
+<!-- Main Canvas (Focal Point) -->
+<main class="flex-1 flex flex-col items-center justify-center relative w-full pt-[top-inset] pb-[bottom-inset]">
+<!-- Orb Shader Container -->
+<div class="relative w-full max-w-[400px] aspect-square flex items-center justify-center mb-12"><svg viewBox="0 0 200 200" style="position:absolute;inset:0;width:100%;height:100%;"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4361EE"/><stop offset="1" stop-color="#14B8A6"/></linearGradient><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3" result="b"/><feComposite in="SourceGraphic" in2="b" operator="over"/></filter></defs><g filter="url(#glow)"><circle cx="61.1" cy="53.3" r="1.7" fill="#93A6FF" opacity="0.53"/><circle cx="60.6" cy="20.7" r="0.8" fill="#14B8A6" opacity="0.65"/><circle cx="114.9" cy="174.7" r="1.6" fill="#14B8A6" opacity="0.52"/><circle cx="35.6" cy="81.3" r="0.8" fill="#93A6FF" opacity="0.89"/><circle cx="128.3" cy="22.7" r="1.9" fill="#93A6FF" opacity="0.49"/><circle cx="67.4" cy="153.9" r="1.5" fill="#14B8A6" opacity="0.91"/><circle cx="129.3" cy="22.0" r="1.3" fill="#93A6FF" opacity="0.98"/><circle cx="18.0" cy="72.2" r="1.5" fill="#93A6FF" opacity="0.92"/><circle cx="82.7" cy="41.0" r="0.9" fill="#93A6FF" opacity="0.57"/><circle cx="106.8" cy="162.9" r="1.2" fill="#93A6FF" opacity="0.78"/><circle cx="54.3" cy="148.6" r="1.6" fill="#93A6FF" opacity="0.96"/><circle cx="49.3" cy="58.5" r="1.3" fill="#93A6FF" opacity="0.50"/><circle cx="180.3" cy="94.7" r="1.8" fill="#93A6FF" opacity="0.81"/><circle cx="111.0" cy="33.6" r="1.1" fill="#14B8A6" opacity="0.59"/><circle cx="121.9" cy="187.5" r="1.6" fill="#93A6FF" opacity="0.59"/><circle cx="29.2" cy="154.4" r="1.1" fill="#93A6FF" opacity="0.56"/><circle cx="36.6" cy="74.3" r="1.3" fill="#93A6FF" opacity="0.94"/><circle cx="117.6" cy="190.2" r="0.9" fill="#93A6FF" opacity="0.45"/><circle cx="161.8" cy="150.9" r="0.9" fill="#93A6FF" opacity="0.65"/><circle cx="32.4" cy="162.2" r="1.8" fill="#93A6FF" opacity="0.98"/><circle cx="182.8" cy="106.0" r="1.1" fill="#93A6FF" opacity="0.72"/><circle cx="59.8" cy="50.8" r="1.9" fill="#93A6FF" opacity="0.67"/><circle cx="148.6" cy="51.9" r="1.9" fill="#93A6FF" opacity="0.51"/><circle cx="147.8" cy="49.5" r="1.0" fill="#93A6FF" opacity="0.77"/><circle cx="106.1" cy="23.0" r="0.8" fill="#93A6FF" opacity="0.72"/><circle cx="72.8" cy="154.2" r="1.8" fill="#93A6FF" opacity="0.93"/><circle cx="78.1" cy="157.9" r="0.9" fill="#93A6FF" opacity="0.97"/><circle cx="38.0" cy="105.5" r="1.0" fill="#93A6FF" opacity="0.86"/><circle cx="23.3" cy="112.0" r="1.3" fill="#93A6FF" opacity="0.92"/><circle cx="118.4" cy="175.0" r="1.2" fill="#93A6FF" opacity="0.52"/><circle cx="180.8" cy="97.5" r="0.9" fill="#93A6FF" opacity="0.71"/><circle cx="111.2" cy="169.9" r="1.1" fill="#93A6FF" opacity="0.54"/><circle cx="172.3" cy="134.6" r="1.8" fill="#93A6FF" opacity="0.94"/><circle cx="161.0" cy="129.1" r="1.0" fill="#93A6FF" opacity="0.53"/><circle cx="171.9" cy="69.1" r="1.8" fill="#93A6FF" opacity="0.87"/><circle cx="123.1" cy="158.7" r="1.4" fill="#93A6FF" opacity="0.65"/><circle cx="89.3" cy="19.2" r="1.3" fill="#93A6FF" opacity="0.46"/><circle cx="53.4" cy="174.1" r="1.3" fill="#93A6FF" opacity="0.51"/><circle cx="39.2" cy="132.5" r="1.3" fill="#93A6FF" opacity="0.95"/><circle cx="150.0" cy="40.6" r="1.8" fill="#14B8A6" opacity="1.00"/><circle cx="187.9" cy="82.6" r="1.4" fill="#93A6FF" opacity="0.50"/><circle cx="116.4" cy="171.0" r="2.0" fill="#14B8A6" opacity="0.63"/><circle cx="91.9" cy="184.7" r="1.9" fill="#93A6FF" opacity="0.65"/><circle cx="177.8" cy="97.8" r="1.2" fill="#93A6FF" opacity="0.49"/><circle cx="177.0" cy="84.7" r="0.9" fill="#93A6FF" opacity="0.85"/><circle cx="34.3" cy="61.6" r="2.0" fill="#93A6FF" opacity="0.49"/><circle cx="157.8" cy="131.8" r="1.1" fill="#93A6FF" opacity="0.81"/><circle cx="164.5" cy="160.5" r="1.5" fill="#93A6FF" opacity="0.76"/><circle cx="31.2" cy="138.2" r="1.0" fill="#93A6FF" opacity="0.96"/><circle cx="85.7" cy="33.9" r="1.2" fill="#93A6FF" opacity="0.80"/><circle cx="66.0" cy="176.9" r="2.0" fill="#14B8A6" opacity="0.67"/><circle cx="162.3" cy="98.5" r="1.9" fill="#93A6FF" opacity="0.56"/><circle cx="164.6" cy="40.0" r="1.8" fill="#93A6FF" opacity="0.49"/><circle cx="77.1" cy="23.8" r="0.8" fill="#93A6FF" opacity="0.79"/><circle cx="128.5" cy="36.5" r="1.0" fill="#93A6FF" opacity="0.96"/><circle cx="147.5" cy="142.1" r="1.5" fill="#93A6FF" opacity="0.56"/><circle cx="86.6" cy="34.9" r="1.4" fill="#93A6FF" opacity="0.56"/><circle cx="172.1" cy="51.2" r="1.1" fill="#14B8A6" opacity="0.65"/><circle cx="184.7" cy="101.9" r="1.7" fill="#93A6FF" opacity="0.56"/><circle cx="30.2" cy="76.5" r="1.9" fill="#14B8A6" opacity="0.45"/><circle cx="163.8" cy="56.0" r="1.0" fill="#93A6FF" opacity="0.75"/><circle cx="148.6" cy="150.2" r="1.8" fill="#93A6FF" opacity="0.88"/><circle cx="153.7" cy="60.4" r="1.7" fill="#93A6FF" opacity="0.46"/><circle cx="154.5" cy="51.4" r="1.9" fill="#93A6FF" opacity="0.49"/><circle cx="160.2" cy="31.4" r="0.8" fill="#93A6FF" opacity="0.93"/><circle cx="94.0" cy="29.6" r="1.8" fill="#93A6FF" opacity="0.88"/><circle cx="125.5" cy="36.4" r="1.8" fill="#93A6FF" opacity="0.46"/><circle cx="142.3" cy="47.9" r="1.2" fill="#93A6FF" opacity="0.68"/><circle cx="118.9" cy="35.4" r="1.2" fill="#14B8A6" opacity="0.52"/><circle cx="159.9" cy="31.5" r="1.3" fill="#93A6FF" opacity="0.78"/><circle cx="176.6" cy="90.9" r="2.0" fill="#93A6FF" opacity="0.47"/><circle cx="139.4" cy="181.8" r="1.3" fill="#93A6FF" opacity="0.47"/><circle cx="90.6" cy="30.6" r="1.3" fill="#93A6FF" opacity="0.71"/><circle cx="39.6" cy="68.5" r="1.9" fill="#93A6FF" opacity="0.40"/><circle cx="19.4" cy="80.1" r="1.2" fill="#93A6FF" opacity="0.80"/><circle cx="173.5" cy="134.6" r="1.8" fill="#93A6FF" opacity="0.59"/><circle cx="86.9" cy="31.6" r="1.3" fill="#93A6FF" opacity="0.65"/><circle cx="81.9" cy="161.5" r="1.6" fill="#93A6FF" opacity="0.96"/><circle cx="165.3" cy="54.3" r="0.8" fill="#93A6FF" opacity="0.73"/><circle cx="83.0" cy="171.8" r="1.4" fill="#93A6FF" opacity="0.79"/><circle cx="37.5" cy="123.8" r="1.8" fill="#93A6FF" opacity="0.94"/><circle cx="130.3" cy="154.9" r="1.2" fill="#93A6FF" opacity="0.78"/><circle cx="135.0" cy="23.6" r="1.0" fill="#93A6FF" opacity="0.53"/><circle cx="167.0" cy="110.4" r="0.9" fill="#93A6FF" opacity="0.91"/><circle cx="31.2" cy="141.0" r="1.4" fill="#14B8A6" opacity="0.82"/><circle cx="103.1" cy="180.9" r="1.7" fill="#14B8A6" opacity="0.85"/><circle cx="157.7" cy="145.7" r="1.4" fill="#14B8A6" opacity="0.97"/><circle cx="164.6" cy="121.1" r="1.8" fill="#93A6FF" opacity="0.67"/><circle cx="54.6" cy="20.4" r="1.9" fill="#93A6FF" opacity="0.97"/><circle cx="36.9" cy="46.0" r="1.5" fill="#93A6FF" opacity="0.90"/><circle cx="166.9" cy="49.6" r="1.1" fill="#93A6FF" opacity="0.56"/><circle cx="45.2" cy="35.7" r="1.1" fill="#93A6FF" opacity="0.78"/><circle cx="161.1" cy="132.3" r="1.4" fill="#93A6FF" opacity="0.59"/><circle cx="143.5" cy="151.5" r="0.9" fill="#93A6FF" opacity="0.82"/><circle cx="35.3" cy="142.4" r="1.3" fill="#93A6FF" opacity="0.52"/><circle cx="165.0" cy="55.7" r="1.7" fill="#93A6FF" opacity="0.91"/><circle cx="56.0" cy="141.1" r="1.8" fill="#93A6FF" opacity="0.85"/><circle cx="170.3" cy="78.8" r="1.5" fill="#93A6FF" opacity="0.73"/><circle cx="112.3" cy="165.9" r="1.2" fill="#93A6FF" opacity="0.42"/><circle cx="68.6" cy="34.2" r="1.0" fill="#14B8A6" opacity="0.68"/><circle cx="56.2" cy="57.7" r="0.8" fill="#93A6FF" opacity="0.74"/><circle cx="59.8" cy="49.7" r="1.3" fill="#93A6FF" opacity="0.43"/><circle cx="116.8" cy="168.4" r="1.7" fill="#93A6FF" opacity="0.63"/><circle cx="133.5" cy="40.7" r="1.4" fill="#14B8A6" opacity="0.41"/><circle cx="171.2" cy="100.0" r="1.6" fill="#93A6FF" opacity="0.87"/><circle cx="102.4" cy="9.6" r="1.0" fill="#14B8A6" opacity="0.41"/><circle cx="157.1" cy="158.0" r="1.6" fill="#93A6FF" opacity="0.53"/><circle cx="106.9" cy="35.0" r="0.9" fill="#93A6FF" opacity="0.85"/><circle cx="138.3" cy="17.6" r="1.2" fill="#14B8A6" opacity="0.42"/><circle cx="60.0" cy="18.6" r="0.9" fill="#93A6FF" opacity="0.83"/><circle cx="70.8" cy="25.4" r="1.8" fill="#14B8A6" opacity="0.86"/><circle cx="48.4" cy="62.3" r="1.2" fill="#93A6FF" opacity="0.87"/><circle cx="35.3" cy="131.3" r="1.8" fill="#93A6FF" opacity="0.60"/><circle cx="127.8" cy="43.1" r="1.8" fill="#93A6FF" opacity="0.78"/><circle cx="80.4" cy="28.7" r="1.1" fill="#93A6FF" opacity="0.98"/><circle cx="127.6" cy="27.9" r="1.7" fill="#93A6FF" opacity="0.66"/><circle cx="89.9" cy="186.7" r="1.9" fill="#93A6FF" opacity="0.45"/><circle cx="102.9" cy="174.8" r="0.8" fill="#93A6FF" opacity="0.63"/><circle cx="139.0" cy="47.0" r="1.2" fill="#93A6FF" opacity="0.88"/><circle cx="160.2" cy="43.7" r="1.9" fill="#93A6FF" opacity="0.41"/><circle cx="171.3" cy="142.5" r="1.6" fill="#93A6FF" opacity="0.85"/><circle cx="53.9" cy="39.9" r="1.1" fill="#93A6FF" opacity="0.46"/><circle cx="75.0" cy="34.8" r="1.4" fill="#93A6FF" opacity="0.68"/><circle cx="25.2" cy="137.8" r="1.1" fill="#93A6FF" opacity="0.82"/><circle cx="99.4" cy="163.9" r="1.4" fill="#14B8A6" opacity="0.47"/><circle cx="105.0" cy="34.3" r="1.7" fill="#93A6FF" opacity="0.69"/><circle cx="176.0" cy="88.8" r="1.0" fill="#93A6FF" opacity="0.46"/><circle cx="109.3" cy="165.1" r="1.1" fill="#14B8A6" opacity="0.72"/><circle cx="176.7" cy="87.5" r="1.8" fill="#93A6FF" opacity="0.48"/><circle cx="12.2" cy="105.0" r="1.3" fill="#93A6FF" opacity="0.68"/></g><path d="M 141.9 100.0 L 142.2 107.4 L 136.1 113.1 L 129.1 116.8 L 126.1 121.9 L 124.0 128.6 L 119.5 133.8 L 113.7 137.6 L 107.2 141.0 L 100.0 140.7 L 93.8 135.2 L 88.9 130.5 L 82.4 130.4 L 74.3 130.6 L 68.4 126.5 L 65.1 120.1 L 62.7 113.6 L 62.6 106.6 L 65.9 100.0 L 67.4 94.3 L 64.7 87.1 L 63.3 78.8 L 67.8 73.0 L 75.1 70.3 L 81.5 68.0 L 87.7 66.2 L 94.0 66.2 L 100.0 64.7 L 107.0 60.3 L 114.9 59.0 L 120.4 64.6 L 123.2 72.4 L 126.6 77.7 L 130.9 82.1 L 134.1 87.6 L 137.5 93.4 L 141.9 100.0 Z" fill="none" stroke="url(#g)" stroke-width="1.6" stroke-linejoin="round" filter="url(#glow)"/><path d="M 141.9 100.0 L 142.2 107.4 L 136.1 113.1 L 129.1 116.8 L 126.1 121.9 L 124.0 128.6 L 119.5 133.8 L 113.7 137.6 L 107.2 141.0 L 100.0 140.7 L 93.8 135.2 L 88.9 130.5 L 82.4 130.4 L 74.3 130.6 L 68.4 126.5 L 65.1 120.1 L 62.7 113.6 L 62.6 106.6 L 65.9 100.0 L 67.4 94.3 L 64.7 87.1 L 63.3 78.8 L 67.8 73.0 L 75.1 70.3 L 81.5 68.0 L 87.7 66.2 L 94.0 66.2 L 100.0 64.7 L 107.0 60.3 L 114.9 59.0 L 120.4 64.6 L 123.2 72.4 L 126.6 77.7 L 130.9 82.1 L 134.1 87.6 L 137.5 93.4 L 141.9 100.0 Z" fill="none" stroke="url(#g)" stroke-width="4.800000000000001" opacity="0.15" stroke-linejoin="round"/><circle cx="100" cy="100" r="96" fill="none" stroke="#93A6FF" stroke-width="0.8" opacity="0.25"/></svg>
+<!-- STITCH_SHADER_START:ANIMATION_20 class="absolute inset-0 w-full h-full pointer-events-none" -->
+<div class="absolute inset-0 w-full h-full pointer-events-none" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_20" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_20');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+
+// Colors from design system
+const vec3 COLOR_INDIGO = vec3(0.2627, 0.3804, 0.9333); // #4361EE
+const vec3 COLOR_AQUA = vec3(0.0784, 0.7216, 0.6510);   // #14B8A6
+const vec3 COLOR_ACCENT_DARK = vec3(0.5765, 0.6510, 1.0); // #93A6FF
+
+float hash(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
+
+void main() {
+    vec2 uv = v_texCoord * 2.0 - 1.0;
+    uv.x *= u_resolution.x / u_resolution.y;
+    
+    float dist = length(uv);
+    float t = u_time * 1.0;
+    
+    // Activated state amplitude (0.10)
+    float amp = 0.10 + sin(t * 2.0) * 0.02;
+    
+    vec3 color = vec3(0.0);
+    
+    // 1. Core soft glow - stronger than idle
+    color += COLOR_INDIGO * 0.2 * exp(-dist * 1.2);
+    
+    // 2. Expanding Concentric Ring Pulse (The "Wake" burst)
+    float pulseSpeed = 1.2;
+    float pulseRadius = mod(t * pulseSpeed, 1.5);
+    float pulseWidth = 0.02;
+    float pulseAlpha = smoothstep(1.2, 0.0, pulseRadius); // Fade out as it expands
+    
+    float pulseDist = abs(dist - pulseRadius);
+    float pulseGlow = exp(-pulseDist * 30.0);
+    color += mix(COLOR_INDIGO, COLOR_AQUA, 0.5) * pulseGlow * pulseAlpha * 0.8;
+    
+    // 3. Central Fluid Waveform Ring
+    float radius = 0.48;
+    float angle = atan(uv.y, uv.x);
+    
+    // Fluid energetic waves
+    float wave = sin(angle * 4.0 + t * 2.0) * 0.03 * amp;
+    wave += cos(angle * 6.0 - t * 1.5) * 0.015;
+    
+    float ringDist = abs(dist - (radius + wave));
+    float ringGlow = exp(-ringDist * 50.0);
+    
+    vec3 ringColor = mix(COLOR_INDIGO, COLOR_AQUA, sin(angle + t) * 0.5 + 0.5);
+    color += ringColor * ringGlow * 1.2;
+    
+    // 4. Pulled-out Particles
+    for(int i = 0; i < 35; i++) {
+        float fi = float(i);
+        float pAngle = fi * 137.5 + t * 0.08;
+        
+        // Particles pulled slightly outward from the ring
+        float baseDist = radius + 0.05 + 0.2 * hash(vec2(fi, 1.0));
+        float pDist = baseDist + 0.03 * sin(t * 3.0 + fi);
+        
+        vec2 pPos = vec2(cos(pAngle), sin(pAngle)) * pDist;
+        float pSize = 0.0015 + 0.002 * hash(vec2(fi, 2.0));
+        float pGlow = pSize / length(uv - pPos);
+        
+        float blink = 0.4 + 0.6 * sin(t * 2.0 + fi);
+        color += COLOR_ACCENT_DARK * pow(pGlow, 1.3) * blink * 0.7;
+    }
+    
+    // Falloff to match page background #0E0E16
+    color *= smoothstep(1.3, 0.0, dist);
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_20 -->
+<!-- Optional subtle glow behind the shader if needed, but shader should handle it -->
+<div class="absolute inset-0 bg-accent-dark opacity-10 rounded-full blur-[100px] pointer-events-none"></div>
+</div>
+<!-- Readouts -->
+<div class="flex flex-col items-center gap-2 text-center z-10">
+<div class="font-caption-13 text-caption-13 text-text-secondary tracking-widest uppercase opacity-80">
+                wake acknowledged
+            </div>
+<div class="font-numeral-data text-numeral-data text-accent-dark flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">graphic_eq</span>
+                amp 0.10
+            </div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full h-[bottom-inset] flex justify-around items-center px-edge-margin bg-surface border-t border-border-hairline z-50 md:hidden">
+<!-- Orb (Active) -->
+<button class="flex flex-col items-center justify-center text-accent-dark active:scale-95 transition-transform duration-200 p-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">radio_button_checked</span>
+</button>
+<!-- Lab (Inactive) -->
+<button class="flex flex-col items-center justify-center text-text-hint hover:text-primary transition-colors active:scale-95 transition-transform duration-200 p-2">
+<span class="material-symbols-outlined">tune</span>
+</button>
+<!-- Settings (Inactive) -->
+<button class="flex flex-col items-center justify-center text-text-hint hover:text-primary transition-colors active:scale-95 transition-transform duration-200 p-2">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</nav>
+<!-- Web Desktop Navigation (Hidden on Mobile, Visible on md+) -->
+<nav class="hidden md:flex fixed top-0 right-edge-margin h-[top-inset] items-center gap-8 z-50">
+<button class="flex items-center gap-2 text-accent-dark hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">radio_button_checked</span>
+<span class="font-label-14 text-label-14">Orb</span>
+</button>
+<button class="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">tune</span>
+<span class="font-label-14 text-label-14">Lab</span>
+</button>
+<button class="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-14 text-label-14">Settings</span>
+</button>
+</nav>
+</body></html>

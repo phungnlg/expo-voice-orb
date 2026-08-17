@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumen - Transitions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-container": "#04b4a2",
+                        "surface-container": "#1f1f27",
+                        "on-error": "#690005",
+                        "on-secondary": "#003731",
+                        "inverse-surface": "#e4e1ed",
+                        "text-hint": "#6E6E82",
+                        "on-surface": "#e4e1ed",
+                        "background": "#0E0E16",
+                        "primary-fixed-dim": "#bac3ff",
+                        "inverse-on-surface": "#302f39",
+                        "tertiary-container": "#ba4e00",
+                        "surface-dim": "#13131b",
+                        "surface-bright": "#393841",
+                        "on-background": "#e4e1ed",
+                        "accent-dark": "#93A6FF",
+                        "success": "#34D98A",
+                        "danger": "#FF6369",
+                        "primary-container": "#4361ee",
+                        "secondary-fixed": "#71f8e4",
+                        "outline-variant": "#444655",
+                        "on-primary": "#00218d",
+                        "tertiary": "#ffb692",
+                        "surface": "#171722",
+                        "primary": "#bac3ff",
+                        "tertiary-fixed": "#ffdbcb",
+                        "surface-inset": "#20202E",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#dee1ff",
+                        "on-primary-container": "#f4f2ff",
+                        "surface-container-high": "#292932",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "accent-fill": "#2E45B8",
+                        "surface-container-lowest": "#0d0d15",
+                        "surface-variant": "#34343d",
+                        "text-secondary": "#A0A0B4",
+                        "warning": "#FFC53D",
+                        "error-container": "#93000a",
+                        "surface-tint": "#bac3ff",
+                        "on-tertiary": "#562000",
+                        "on-surface-variant": "#c4c5d7",
+                        "inverse-primary": "#2e4edc",
+                        "border-hairline": "#2A2A3A",
+                        "secondary": "#4fdbc8",
+                        "on-secondary-container": "#003f38",
+                        "on-primary-fixed": "#001159",
+                        "error": "#ffb4ab",
+                        "outline": "#8e8fa1",
+                        "on-primary-fixed-variant": "#0031c4",
+                        "on-tertiary-container": "#fff1eb",
+                        "on-secondary-fixed": "#00201c",
+                        "text-primary": "#EAEAF5",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "on-tertiary-fixed": "#341100",
+                        "surface-container-low": "#1b1b23",
+                        "surface-container-highest": "#34343d",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "on-secondary-fixed-variant": "#005048",
+                        "aqua": "#14B8A6"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        "2xl": "1.25rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        "top-inset": "59px",
+                        base: "8px",
+                        "edge-margin": "20px",
+                        "bottom-inset": "34px",
+                        gutter: "16px"
+                    },
+                    fontFamily: {
+                        "body-16": ["Plus Jakarta Sans"],
+                        "title-20": ["Plus Jakarta Sans"],
+                        "wordmark-caps": ["Space Grotesk"],
+                        "caption-13": ["Plus Jakarta Sans"],
+                        "label-14": ["Plus Jakarta Sans"],
+                        "numeral-data": ["Space Grotesk"],
+                        "display-32": ["Space Grotesk"]
+                    },
+                    fontSize: {
+                        "body-16": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "title-20": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "wordmark-caps": ["14px", { lineHeight: "20px", letterSpacing: "0.1em", fontWeight: "700" }],
+                        "caption-13": ["13px", { lineHeight: "18px", fontWeight: "500" }],
+                        "label-14": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+                        "numeral-data": ["16px", { lineHeight: "24px", fontWeight: "500" }],
+                        "display-32": ["32px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-text-primary antialiased min-h-screen flex flex-col font-body-16 selection:bg-accent-dark/30 selection:text-white">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-edge-margin h-[top-inset] z-50 bg-background transition-opacity duration-300">
+<div class="flex items-center gap-2 text-text-primary hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-text-primary text-xl" data-icon="blur_on">blur_on</span>
+<span class="font-wordmark-caps text-wordmark-caps tracking-widest text-text-primary uppercase">LUMEN</span>
+</div>
+<div class="bg-primary-container/20 px-3 py-1 rounded-full border border-primary-container/30">
+<span class="font-caption-13 text-caption-13 text-accent-dark uppercase">Idle</span>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 mt-[top-inset] px-edge-margin pb-[calc(env(safe-area-inset-bottom,34px)+80px)] space-y-6">
+<h1 class="font-display-32 text-display-32 text-text-primary mt-6 mb-8">Transitions</h1>
+<div class="space-y-4">
+<!-- Transition Card 1 -->
+<div class="bg-surface border border-border-hairline rounded-2xl p-5 flex flex-col gap-4 shadow-sm shadow-black/10">
+<div class="flex justify-between items-center">
+<span class="font-label-14 text-label-14 text-text-primary">Idle <span class="text-text-secondary mx-1">→</span> Activated</span>
+<!-- Duration Stepper -->
+<div class="flex items-center bg-surface-inset rounded-full p-1">
+<button aria-label="Decrease" class="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-numeral-data text-numeral-data text-text-primary px-2 min-w-[64px] text-center">320 ms</span>
+<button aria-label="Increase" class="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex gap-2">
+<!-- Active Easing Chip -->
+<button class="px-4 py-1.5 rounded-full bg-primary-container/14 border border-primary-container/20 font-caption-13 text-caption-13 text-accent-dark transition-colors">
+                            easeInOut
+                        </button>
+<!-- Inactive Easing Chip -->
+<button class="px-4 py-1.5 rounded-full bg-surface-inset border border-border-hairline font-caption-13 text-caption-13 text-text-secondary hover:text-text-primary transition-colors">
+                            spring
+                        </button>
+</div>
+<!-- Easing Curve visualization -->
+<div class="ml-auto w-12 h-6 flex items-center justify-center opacity-80">
+<svg class="w-full h-full stroke-aqua stroke-2 fill-none stroke-linecap-round stroke-linejoin-round" viewbox="0 0 40 20">
+<path d="M 2 18 C 10 18, 30 2, 38 2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Transition Card 2 -->
+<div class="bg-surface border border-border-hairline rounded-2xl p-5 flex flex-col gap-4 shadow-sm shadow-black/10">
+<div class="flex justify-between items-center">
+<span class="font-label-14 text-label-14 text-text-primary">Activated <span class="text-text-secondary mx-1">→</span> Listening</span>
+<div class="flex items-center bg-surface-inset rounded-full p-1">
+<button aria-label="Decrease" class="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-numeral-data text-numeral-data text-text-primary px-2 min-w-[64px] text-center">600 ms</span>
+<button aria-label="Increase" class="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex gap-2">
+<button class="px-4 py-1.5 rounded-full bg-surface-inset border border-border-hairline font-caption-13 text-caption-13 text-text-secondary hover:text-text-primary transition-colors">
+                            easeInOut
+                        </button>
+<button class="px-4 py-1.5 rounded-full bg-primary-container/14 border border-primary-container/20 font-caption-13 text-caption-13 text-accent-dark transition-colors">
+                            spring
+                        </button>
+</div>
+<div class="ml-auto w-12 h-6 flex items-center justify-center opacity-80">
+<svg class="w-full h-full stroke-aqua stroke-2 fill-none stroke-linecap-round stroke-linejoin-round" viewbox="0 0 40 20">
+<path d="M 2 18 Q 15 -10 25 10 T 38 2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Transition Card 3 -->
+<div class="bg-surface border border-border-hairline rounded-2xl p-5 flex flex-col gap-4 shadow-sm shadow-black/10">
+<div class="flex justify-between items-center">
+<span class="font-label-14 text-label-14 text-text-primary">Listening <span class="text-text-secondary mx-1">→</span> Processing</span>
+<div class="flex items-center bg-surface-inset rounded-full p-1">
+<button aria-label="Decrease" class="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-numeral-data text-numeral-data text-text-primary px-2 min-w-[64px] text-center">450 ms</span>
+<button aria-label="Increase" class="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex gap-2">
+<button class="px-4 py-1.5 rounded-full bg-primary-container/14 border border-primary-container/20 font-caption-13 text-caption-13 text-accent-dark transition-colors">
+                            easeInOut
+                        </button>
+<button class="px-4 py-1.5 rounded-full bg-surface-inset border border-border-hairline font-caption-13 text-caption-13 text-text-secondary hover:text-text-primary transition-colors">
+                            spring
+                        </button>
+</div>
+<div class="ml-auto w-12 h-6 flex items-center justify-center opacity-80">
+<svg class="w-full h-full stroke-aqua stroke-2 fill-none stroke-linecap-round stroke-linejoin-round" viewbox="0 0 40 20">
+<path d="M 2 18 C 10 18, 30 2, 38 2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Transition Card 4 -->
+<div class="bg-surface border border-border-hairline rounded-2xl p-5 flex flex-col gap-4 shadow-sm shadow-black/10 opacity-75 grayscale-[20%] transition-opacity hover:opacity-100 hover:grayscale-0">
+<div class="flex justify-between items-center">
+<span class="font-label-14 text-label-14 text-text-primary">Processing <span class="text-text-secondary mx-1">→</span> Speaking</span>
+<div class="flex items-center bg-surface-inset rounded-full p-1">
+<button aria-label="Decrease" class="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="font-numeral-data text-numeral-data text-text-primary px-2 min-w-[64px] text-center">800 ms</span>
+<button aria-label="Increase" class="w-8 h-8 rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex gap-2">
+<button class="px-4 py-1.5 rounded-full bg-surface-inset border border-border-hairline font-caption-13 text-caption-13 text-text-secondary hover:text-text-primary transition-colors">
+                            easeInOut
+                        </button>
+<button class="px-4 py-1.5 rounded-full bg-primary-container/14 border border-primary-container/20 font-caption-13 text-caption-13 text-accent-dark transition-colors">
+                            spring
+                        </button>
+</div>
+<div class="ml-auto w-12 h-6 flex items-center justify-center opacity-80">
+<svg class="w-full h-full stroke-aqua stroke-2 fill-none stroke-linecap-round stroke-linejoin-round" viewbox="0 0 40 20">
+<path d="M 2 18 Q 15 -10 25 10 T 38 2"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full h-[calc(env(safe-area-inset-bottom,34px)+64px)] pb-[env(safe-area-inset-bottom,34px)] flex justify-around items-center px-edge-margin bg-surface border-t border-border-hairline z-50">
+<button aria-label="Orb" class="text-text-hint flex flex-col items-center justify-center hover:text-primary transition-colors active:scale-95 duration-200 w-16 h-full group">
+<span class="material-symbols-outlined text-[28px] mb-1 group-hover:opacity-80 transition-opacity" data-icon="circle_dot">radio_button_checked</span>
+<span class="font-caption-13 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-1">Orb</span>
+</button>
+<button aria-label="Lab" class="text-text-hint flex flex-col items-center justify-center hover:text-primary transition-colors active:scale-95 duration-200 w-16 h-full group">
+<span class="material-symbols-outlined text-[28px] mb-1 group-hover:opacity-80 transition-opacity" data-icon="tune">tune</span>
+<span class="font-caption-13 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-1">Lab</span>
+</button>
+<button aria-label="Settings" class="text-accent-dark flex flex-col items-center justify-center hover:text-primary transition-colors active:scale-95 duration-200 w-16 h-full relative">
+<span class="material-symbols-outlined text-[28px] mb-1" data-icon="settings" data-weight="fill" style="font-variation-settings: 'FILL' 1;">settings</span>
+<!-- Active Indicator Dot -->
+<div class="absolute bottom-2 w-1 h-1 rounded-full bg-accent-dark"></div>
+</button>
+</nav>
+</body></html>

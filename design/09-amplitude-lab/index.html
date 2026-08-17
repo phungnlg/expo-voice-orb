@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumen - Amplitude Lab</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#1b1b23",
+                    "outline": "#8e8fa1",
+                    "on-primary-container": "#f4f2ff",
+                    "primary": "#bac3ff",
+                    "primary-container": "#4361ee",
+                    "secondary-container": "#04b4a2",
+                    "accent-dark": "#93A6FF",
+                    "warning": "#FFC53D",
+                    "on-tertiary-fixed-variant": "#793000",
+                    "on-secondary-fixed-variant": "#005048",
+                    "on-secondary-container": "#003f38",
+                    "secondary-fixed-dim": "#4fdbc8",
+                    "inverse-primary": "#2e4edc",
+                    "error": "#ffb4ab",
+                    "background": "#13131b",
+                    "on-surface": "#e4e1ed",
+                    "text-hint": "#6E6E82",
+                    "on-surface-variant": "#c4c5d7",
+                    "on-background": "#e4e1ed",
+                    "secondary-fixed": "#71f8e4",
+                    "surface-container": "#1f1f27",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed": "#00201c",
+                    "on-secondary": "#003731",
+                    "success": "#34D98A",
+                    "tertiary-fixed-dim": "#ffb692",
+                    "primary-fixed-dim": "#bac3ff",
+                    "surface-inset": "#20202E",
+                    "text-primary": "#EAEAF5",
+                    "surface-tint": "#bac3ff",
+                    "surface": "#171722",
+                    "on-primary-fixed-variant": "#0031c4",
+                    "surface-bright": "#393841",
+                    "primary-fixed": "#dee1ff",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#34343d",
+                    "text-secondary": "#A0A0B4",
+                    "inverse-surface": "#e4e1ed",
+                    "danger": "#FF6369",
+                    "tertiary-fixed": "#ffdbcb",
+                    "tertiary": "#ffb692",
+                    "on-tertiary": "#562000",
+                    "on-tertiary-container": "#fff1eb",
+                    "border-hairline": "#2A2A3A",
+                    "inverse-on-surface": "#302f39",
+                    "accent-fill": "#2E45B8",
+                    "on-primary": "#00218d",
+                    "secondary": "#4fdbc8",
+                    "surface-variant": "#34343d",
+                    "on-primary-fixed": "#001159",
+                    "surface-container-high": "#292932",
+                    "on-tertiary-fixed": "#341100",
+                    "on-error": "#690005",
+                    "surface-dim": "#13131b",
+                    "tertiary-container": "#ba4e00",
+                    "outline-variant": "#444655",
+                    "surface-container-lowest": "#0d0d15"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "top-inset": "59px",
+                    "bottom-inset": "34px",
+                    "edge-margin": "20px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "numeral-data": [
+                            "Space Grotesk"
+                    ],
+                    "display-32": [
+                            "Space Grotesk"
+                    ],
+                    "caption-13": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-16": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "wordmark-caps": [
+                            "Space Grotesk"
+                    ],
+                    "title-20": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label-14": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "numeral-data": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "display-32": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "caption-13": [
+                            "13px",
+                            {
+                                    "lineHeight": "18px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-16": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "wordmark-caps": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "title-20": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-14": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "500"
+                            }
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0E0E16; /* Fallback slightly darker than bg-background for strict theme matching */
+        }
+        
+        /* Custom Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #EAEAF5;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(234, 234, 245, 0.3);
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #20202E;
+            border-radius: 2px;
+        }
+        
+        input[type=range]:focus {
+            outline: none;
+        }
+        
+        /* Simulated fill for range slider via background linear-gradient in inline styles */
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-text-primary antialiased min-h-screen flex flex-col pb-[100px] pt-top-inset">
+<!-- TopAppBar from Shared Components -->
+<header class="fixed top-0 w-full flex justify-between items-center px-edge-margin h-top-inset z-50 bg-background transition-opacity duration-300">
+<div class="font-wordmark-caps text-wordmark-caps text-text-primary tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-dark">blur_on</span>
+            LUMEN
+        </div>
+<!-- Active State Chip -->
+<div class="px-3 py-1 rounded-full bg-accent-dark/15 border border-accent-dark/20 flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 rounded-full bg-accent-dark animate-pulse"></div>
+<span class="font-caption-13 text-caption-13 text-accent-dark">Listening</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-edge-margin pt-gutter flex flex-col gap-6 w-full max-w-md mx-auto">
+<!-- Top Focal Card (Waveform Preview) -->
+<div class="bg-surface border border-border-hairline rounded-xl overflow-hidden flex flex-col relative h-48">
+<!-- Simulated Waveform Area -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-inset/50 to-transparent flex items-end justify-center pb-8 overflow-hidden opacity-80 pointer-events-none">
+<!-- Using simple div bars to simulate waveform. Real app would use canvas/svg -->
+<div class="w-full flex items-end justify-between px-2 gap-px h-full">
+<!-- Generating a fake static wave structure that looks decent -->
+<div class="w-[2%] h-[10%] bg-accent-dark rounded-t-sm"></div>
+<div class="w-[2%] h-[15%] bg-accent-dark rounded-t-sm"></div>
+<div class="w-[2%] h-[25%] bg-accent-dark rounded-t-sm opacity-90"></div>
+<div class="w-[2%] h-[40%] bg-accent-dark rounded-t-sm opacity-90"></div>
+<div class="w-[2%] h-[60%] bg-[#14B8A6] rounded-t-sm"></div>
+<div class="w-[2%] h-[75%] bg-[#14B8A6] rounded-t-sm"></div>
+<div class="w-[2%] h-[90%] bg-white rounded-t-sm opacity-80"></div>
+<div class="w-[2%] h-[65%] bg-[#14B8A6] rounded-t-sm"></div>
+<div class="w-[2%] h-[45%] bg-accent-dark rounded-t-sm opacity-90"></div>
+<div class="w-[2%] h-[30%] bg-accent-dark rounded-t-sm opacity-90"></div>
+<div class="w-[2%] h-[20%] bg-accent-dark rounded-t-sm opacity-80"></div>
+<div class="w-[2%] h-[25%] bg-accent-dark rounded-t-sm opacity-80"></div>
+<div class="w-[2%] h-[35%] bg-accent-dark rounded-t-sm opacity-90"></div>
+<div class="w-[2%] h-[55%] bg-[#14B8A6] rounded-t-sm opacity-90"></div>
+<div class="w-[2%] h-[70%] bg-[#14B8A6] rounded-t-sm opacity-90"></div>
+<div class="w-[2%] h-[50%] bg-[#14B8A6] rounded-t-sm opacity-90"></div>
+<div class="w-[2%] h-[35%] bg-accent-dark rounded-t-sm opacity-80"></div>
+<div class="w-[2%] h-[20%] bg-accent-dark rounded-t-sm opacity-80"></div>
+<div class="w-[2%] h-[15%] bg-accent-dark rounded-t-sm opacity-70"></div>
+<div class="w-[2%] h-[10%] bg-accent-dark rounded-t-sm opacity-70"></div>
+</div>
+</div>
+<div class="relative z-10 flex flex-col justify-between h-full p-4">
+<div class="font-label-14 text-label-14 text-text-hint uppercase tracking-wider">Amplitude Signal</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-32 text-display-32 text-text-primary">0.42</span>
+<span class="font-numeral-data text-numeral-data text-accent-dark">amp</span>
+</div>
+</div>
+</div>
+<!-- Control Section (Segmented Control) -->
+<div class="bg-surface-inset p-1 rounded-lg flex border border-border-hairline">
+<button class="flex-1 py-2 text-center rounded-md bg-accent-dark/15 text-accent-dark font-label-14 text-label-14 transition-colors">
+                Sine
+            </button>
+<button class="flex-1 py-2 text-center rounded-md text-text-secondary hover:text-text-primary font-label-14 text-label-14 transition-colors">
+                Noise
+            </button>
+<button class="flex-1 py-2 text-center rounded-md text-text-secondary hover:text-text-primary font-label-14 text-label-14 transition-colors">
+                Envelope
+            </button>
+</div>
+<!-- Sliders Group -->
+<div class="bg-surface border border-border-hairline rounded-xl p-5 flex flex-col gap-6">
+<!-- Slider 1 -->
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<span class="font-label-14 text-label-14 text-text-primary">Frequency</span>
+<span class="font-numeral-data text-numeral-data text-text-secondary">0.8 Hz</span>
+</div>
+<input class="w-full" max="100" min="0" style="background: linear-gradient(to right, #93A6FF 80%, #20202E 80%);" type="range" value="80"/>
+</div>
+<!-- Slider 2 -->
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<span class="font-label-14 text-label-14 text-text-primary">Gain</span>
+<span class="font-numeral-data text-numeral-data text-text-secondary">0.7</span>
+</div>
+<input class="w-full" max="100" min="0" style="background: linear-gradient(to right, #93A6FF 70%, #20202E 70%);" type="range" value="70"/>
+</div>
+<!-- Slider 3 -->
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<span class="font-label-14 text-label-14 text-text-primary">Smoothing</span>
+<span class="font-numeral-data text-numeral-data text-text-secondary">0.35</span>
+</div>
+<input class="w-full" max="100" min="0" style="background: linear-gradient(to right, #93A6FF 35%, #20202E 35%);" type="range" value="35"/>
+</div>
+</div>
+<!-- Bottom Note -->
+<div class="bg-surface-inset border border-border-hairline rounded-lg p-3 flex items-start gap-3 mb-6">
+<span class="material-symbols-outlined text-text-secondary text-[18px] mt-0.5" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="font-caption-13 text-caption-13 text-text-secondary leading-tight">
+                feeds the orb the same normalized 0..1 stream your audio pipeline will
+            </p>
+</div>
+</main>
+<!-- BottomNavBar from Shared Components -->
+<nav class="fixed bottom-0 w-full h-[80px] flex justify-around items-center px-edge-margin bg-surface border-t border-border-hairline z-50 md:hidden">
+<!-- Orb Tab (Inactive) -->
+<a class="text-text-hint flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors w-16" href="#">
+<span class="material-symbols-outlined text-[24px]">radio_button_checked</span>
+<span class="font-label-14 text-[10px] uppercase tracking-wide">Orb</span>
+</a>
+<!-- Lab Tab (Active - Semantic Match) -->
+<a class="text-accent-dark flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform duration-200 w-16 relative" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">tune</span>
+<span class="font-label-14 text-[10px] uppercase tracking-wide">Lab</span>
+<!-- Active indicator dot -->
+<div class="absolute -top-1 w-1 h-1 rounded-full bg-accent-dark"></div>
+</a>
+<!-- Settings Tab (Inactive) -->
+<a class="text-text-hint flex flex-col items-center justify-center gap-1 hover:text-primary transition-colors w-16" href="#">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="font-label-14 text-[10px] uppercase tracking-wide">Settings</span>
+</a>
+</nav>
+<!-- Desktop Nav Fallback (Optional, keeps structure clean on wider screens though prompt implies mobile-first layout) -->
+<div class="hidden md:flex fixed bottom-0 w-full h-bottom-inset bg-surface border-t border-border-hairline items-center justify-center z-50">
+<span class="font-caption-13 text-text-hint">Mobile View Recommended</span>
+</div>
+</body></html>

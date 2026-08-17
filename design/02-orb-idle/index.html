@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Lumen - Orb Idle</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#13131b",
+                        "on-secondary": "#003731",
+                        "primary-container": "#4361ee",
+                        "outline-variant": "#444655",
+                        "surface-variant": "#34343d",
+                        "secondary-container": "#04b4a2",
+                        "inverse-on-surface": "#302f39",
+                        "warning": "#FFC53D",
+                        "outline": "#8e8fa1",
+                        "surface-container-high": "#292932",
+                        "inverse-primary": "#2e4edc",
+                        "primary": "#bac3ff",
+                        "on-surface": "#e4e1ed",
+                        "background": "#13131b",
+                        "surface-container-lowest": "#0d0d15",
+                        "border-hairline": "#2A2A3A",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#1f1f27",
+                        "on-primary-container": "#f4f2ff",
+                        "inverse-surface": "#e4e1ed",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "success": "#34D98A",
+                        "surface-container-highest": "#34343d",
+                        "surface": "#171722",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "on-primary": "#00218d",
+                        "on-secondary-container": "#003f38",
+                        "tertiary-container": "#ba4e00",
+                        "on-secondary-fixed-variant": "#005048",
+                        "on-primary-fixed": "#001159",
+                        "text-hint": "#6E6E82",
+                        "secondary-fixed": "#71f8e4",
+                        "on-background": "#e4e1ed",
+                        "accent-dark": "#93A6FF",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#bac3ff",
+                        "surface-bright": "#393841",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#341100",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "secondary": "#4fdbc8",
+                        "tertiary": "#ffb692",
+                        "primary-fixed": "#dee1ff",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#fff1eb",
+                        "surface-container-low": "#1b1b23",
+                        "tertiary-fixed": "#ffdbcb",
+                        "danger": "#FF6369",
+                        "accent-fill": "#2E45B8",
+                        "text-primary": "#EAEAF5",
+                        "on-secondary-fixed": "#00201c",
+                        "surface-tint": "#bac3ff",
+                        "surface-inset": "#20202E",
+                        "on-tertiary": "#562000",
+                        "on-primary-fixed-variant": "#0031c4",
+                        "on-surface-variant": "#c4c5d7",
+                        "text-secondary": "#A0A0B4"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "bottom-inset": "34px",
+                        "top-inset": "59px",
+                        "gutter": "16px",
+                        "edge-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "body-16": ["Plus Jakarta Sans"],
+                        "label-14": ["Plus Jakarta Sans"],
+                        "numeral-data": ["Space Grotesk"],
+                        "wordmark-caps": ["Space Grotesk"],
+                        "title-20": ["Plus Jakarta Sans"],
+                        "display-32": ["Space Grotesk"],
+                        "caption-13": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-16": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-14": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "numeral-data": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "wordmark-caps": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "title-20": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-32": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "caption-13": ["13px", { "lineHeight": "18px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @layer utilities {
+            .bg-background-page { background-color: #0E0E16; }
+            .bg-accent-tint { background-color: rgba(46, 69, 184, 0.14); }
+        }
+        body {
+            background-color: #0E0E16;
+            color: #EAEAF5;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-body-16 overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-edge-margin h-[top-inset] w-full z-50 pt-top-inset bg-background-page flat no shadows transition-opacity duration-300">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-primary hover:opacity-80 transition-opacity duration-300 cursor-pointer" data-icon="blur_on">blur_on</span>
+<h1 class="font-wordmark-caps text-wordmark-caps text-text-primary tracking-widest cursor-default">LUMEN</h1>
+</div>
+<div class="bg-accent-tint text-accent-dark font-label-14 text-label-14 px-3 py-1 rounded-full border border-accent-dark/20 flex items-center justify-center">
+            Idle
+        </div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 relative flex flex-col items-center justify-center pt-[calc(var(--spacing-top-inset)+60px)] pb-[calc(var(--spacing-bottom-inset)+60px)] px-edge-margin">
+<!-- Orb Container (Focal Point) -->
+<div class="relative w-full max-w-sm aspect-square mb-8 flex items-center justify-center"><svg viewBox="0 0 200 200" style="position:absolute;inset:0;width:100%;height:100%;"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4361EE"/><stop offset="1" stop-color="#14B8A6"/></linearGradient><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2" result="b"/><feComposite in="SourceGraphic" in2="b" operator="over"/></filter></defs><g filter="url(#glow)"><circle cx="62.4" cy="54.9" r="1.7" fill="#93A6FF" opacity="0.33"/><circle cx="62.3" cy="24.1" r="0.8" fill="#14B8A6" opacity="0.40"/><circle cx="114.3" cy="171.7" r="1.6" fill="#14B8A6" opacity="0.32"/><circle cx="37.9" cy="82.0" r="0.8" fill="#93A6FF" opacity="0.53"/><circle cx="127.1" cy="25.9" r="1.9" fill="#93A6FF" opacity="0.30"/><circle cx="68.5" cy="152.0" r="1.5" fill="#14B8A6" opacity="0.55"/><circle cx="128.1" cy="25.2" r="1.3" fill="#93A6FF" opacity="0.59"/><circle cx="21.5" cy="73.4" r="1.5" fill="#93A6FF" opacity="0.55"/><circle cx="83.3" cy="43.0" r="0.9" fill="#93A6FF" opacity="0.35"/><circle cx="106.6" cy="160.7" r="1.2" fill="#93A6FF" opacity="0.47"/><circle cx="55.9" cy="146.8" r="1.6" fill="#93A6FF" opacity="0.58"/><circle cx="51.1" cy="60.0" r="1.3" fill="#93A6FF" opacity="0.31"/><circle cx="177.0" cy="94.9" r="1.8" fill="#93A6FF" opacity="0.49"/><circle cx="110.6" cy="36.0" r="1.1" fill="#14B8A6" opacity="0.36"/><circle cx="120.9" cy="183.7" r="1.6" fill="#93A6FF" opacity="0.36"/><circle cx="32.3" cy="152.1" r="1.1" fill="#93A6FF" opacity="0.34"/><circle cx="39.0" cy="75.2" r="1.3" fill="#93A6FF" opacity="0.56"/><circle cx="116.8" cy="186.3" r="0.9" fill="#93A6FF" opacity="0.28"/><circle cx="159.3" cy="148.8" r="0.9" fill="#93A6FF" opacity="0.40"/><circle cx="35.3" cy="159.5" r="1.8" fill="#93A6FF" opacity="0.59"/><circle cx="179.4" cy="105.7" r="1.1" fill="#93A6FF" opacity="0.44"/><circle cx="61.2" cy="52.5" r="1.9" fill="#93A6FF" opacity="0.41"/><circle cx="146.8" cy="53.7" r="1.9" fill="#93A6FF" opacity="0.31"/><circle cx="146.0" cy="51.3" r="1.0" fill="#93A6FF" opacity="0.46"/><circle cx="105.8" cy="26.0" r="0.8" fill="#93A6FF" opacity="0.44"/><circle cx="73.7" cy="152.3" r="1.8" fill="#93A6FF" opacity="0.56"/><circle cx="78.9" cy="155.9" r="0.9" fill="#93A6FF" opacity="0.58"/><circle cx="40.2" cy="105.3" r="1.0" fill="#93A6FF" opacity="0.52"/><circle cx="26.4" cy="111.5" r="1.3" fill="#93A6FF" opacity="0.56"/><circle cx="117.6" cy="172.1" r="1.2" fill="#93A6FF" opacity="0.32"/><circle cx="177.5" cy="97.6" r="0.9" fill="#93A6FF" opacity="0.43"/><circle cx="110.8" cy="167.3" r="1.1" fill="#93A6FF" opacity="0.33"/><circle cx="169.4" cy="133.2" r="1.8" fill="#93A6FF" opacity="0.57"/><circle cx="158.8" cy="128.1" r="1.0" fill="#93A6FF" opacity="0.32"/><circle cx="169.0" cy="70.4" r="1.8" fill="#93A6FF" opacity="0.52"/><circle cx="122.3" cy="156.7" r="1.4" fill="#93A6FF" opacity="0.40"/><circle cx="89.7" cy="22.5" r="1.3" fill="#93A6FF" opacity="0.28"/><circle cx="55.4" cy="171.0" r="1.3" fill="#93A6FF" opacity="0.32"/><circle cx="41.5" cy="131.3" r="1.3" fill="#93A6FF" opacity="0.57"/><circle cx="148.0" cy="43.0" r="1.8" fill="#14B8A6" opacity="0.60"/><circle cx="184.2" cy="83.4" r="1.4" fill="#93A6FF" opacity="0.31"/><circle cx="115.8" cy="168.2" r="2.0" fill="#14B8A6" opacity="0.38"/><circle cx="92.2" cy="181.2" r="1.9" fill="#93A6FF" opacity="0.40"/><circle cx="174.6" cy="97.9" r="1.2" fill="#93A6FF" opacity="0.30"/><circle cx="173.9" cy="85.3" r="0.9" fill="#93A6FF" opacity="0.51"/><circle cx="36.9" cy="63.1" r="2.0" fill="#93A6FF" opacity="0.31"/><circle cx="155.7" cy="130.7" r="1.1" fill="#93A6FF" opacity="0.49"/><circle cx="161.8" cy="157.9" r="1.5" fill="#93A6FF" opacity="0.46"/><circle cx="34.0" cy="136.7" r="1.0" fill="#93A6FF" opacity="0.58"/><circle cx="86.3" cy="36.3" r="1.2" fill="#93A6FF" opacity="0.49"/><circle cx="67.5" cy="173.7" r="2.0" fill="#14B8A6" opacity="0.41"/><circle cx="160.2" cy="98.5" r="1.9" fill="#93A6FF" opacity="0.34"/><circle cx="161.8" cy="42.6" r="1.8" fill="#93A6FF" opacity="0.31"/><circle cx="78.0" cy="26.9" r="0.8" fill="#93A6FF" opacity="0.48"/><circle cx="127.4" cy="38.9" r="1.0" fill="#93A6FF" opacity="0.58"/><circle cx="145.8" cy="140.6" r="1.5" fill="#93A6FF" opacity="0.35"/><circle cx="87.0" cy="37.2" r="1.4" fill="#93A6FF" opacity="0.34"/><circle cx="169.1" cy="53.3" r="1.1" fill="#14B8A6" opacity="0.40"/><circle cx="181.1" cy="101.8" r="1.7" fill="#93A6FF" opacity="0.34"/><circle cx="32.9" cy="77.4" r="1.9" fill="#14B8A6" opacity="0.28"/><circle cx="161.2" cy="57.8" r="1.0" fill="#93A6FF" opacity="0.45"/><circle cx="146.8" cy="148.3" r="1.8" fill="#93A6FF" opacity="0.53"/><circle cx="151.8" cy="61.9" r="1.7" fill="#93A6FF" opacity="0.29"/><circle cx="152.4" cy="53.3" r="1.9" fill="#93A6FF" opacity="0.30"/><circle cx="157.6" cy="34.4" r="0.8" fill="#93A6FF" opacity="0.56"/><circle cx="94.3" cy="32.3" r="1.8" fill="#93A6FF" opacity="0.53"/><circle cx="124.6" cy="38.7" r="1.8" fill="#93A6FF" opacity="0.29"/><circle cx="140.8" cy="49.8" r="1.2" fill="#93A6FF" opacity="0.41"/><circle cx="118.2" cy="37.8" r="1.2" fill="#14B8A6" opacity="0.32"/><circle cx="157.3" cy="34.5" r="1.3" fill="#93A6FF" opacity="0.47"/><circle cx="173.6" cy="91.2" r="2.0" fill="#93A6FF" opacity="0.29"/><circle cx="137.7" cy="178.3" r="1.3" fill="#93A6FF" opacity="0.29"/><circle cx="90.9" cy="33.2" r="1.3" fill="#93A6FF" opacity="0.43"/><circle cx="41.8" cy="69.6" r="1.9" fill="#93A6FF" opacity="0.25"/><circle cx="22.7" cy="81.0" r="1.2" fill="#93A6FF" opacity="0.48"/><circle cx="170.5" cy="133.2" r="1.8" fill="#93A6FF" opacity="0.36"/><circle cx="87.3" cy="34.2" r="1.3" fill="#93A6FF" opacity="0.39"/><circle cx="82.5" cy="159.3" r="1.6" fill="#93A6FF" opacity="0.58"/><circle cx="162.6" cy="56.2" r="0.8" fill="#93A6FF" opacity="0.44"/><circle cx="83.7" cy="169.0" r="1.4" fill="#93A6FF" opacity="0.48"/><circle cx="39.8" cy="122.9" r="1.8" fill="#93A6FF" opacity="0.57"/><circle cx="129.3" cy="153.0" r="1.2" fill="#93A6FF" opacity="0.47"/><circle cx="133.6" cy="26.8" r="1.0" fill="#93A6FF" opacity="0.33"/><circle cx="164.6" cy="110.0" r="0.9" fill="#93A6FF" opacity="0.55"/><circle cx="34.0" cy="139.4" r="1.4" fill="#14B8A6" opacity="0.49"/><circle cx="102.9" cy="177.6" r="1.7" fill="#14B8A6" opacity="0.51"/><circle cx="155.5" cy="143.9" r="1.4" fill="#14B8A6" opacity="0.59"/><circle cx="162.2" cy="120.3" r="1.8" fill="#93A6FF" opacity="0.41"/><circle cx="56.6" cy="23.9" r="1.9" fill="#93A6FF" opacity="0.58"/><circle cx="39.5" cy="48.3" r="1.5" fill="#93A6FF" opacity="0.54"/><circle cx="164.1" cy="51.7" r="1.1" fill="#93A6FF" opacity="0.34"/><circle cx="47.5" cy="38.4" r="1.1" fill="#93A6FF" opacity="0.47"/><circle cx="158.8" cy="131.1" r="1.4" fill="#93A6FF" opacity="0.36"/><circle cx="141.9" cy="149.6" r="0.9" fill="#93A6FF" opacity="0.50"/><circle cx="37.9" cy="140.7" r="1.3" fill="#93A6FF" opacity="0.32"/><circle cx="162.4" cy="57.5" r="1.7" fill="#93A6FF" opacity="0.55"/><circle cx="57.5" cy="139.7" r="1.8" fill="#93A6FF" opacity="0.51"/><circle cx="167.6" cy="79.6" r="1.5" fill="#93A6FF" opacity="0.44"/><circle cx="111.9" cy="163.5" r="1.2" fill="#93A6FF" opacity="0.26"/><circle cx="69.8" cy="36.7" r="1.0" fill="#14B8A6" opacity="0.41"/><circle cx="57.7" cy="59.1" r="0.8" fill="#93A6FF" opacity="0.45"/><circle cx="61.3" cy="51.5" r="1.3" fill="#93A6FF" opacity="0.27"/><circle cx="116.2" cy="165.8" r="1.7" fill="#93A6FF" opacity="0.38"/><circle cx="132.3" cy="42.9" r="1.4" fill="#14B8A6" opacity="0.26"/><circle cx="168.5" cy="100.0" r="1.6" fill="#93A6FF" opacity="0.52"/><circle cx="102.3" cy="13.5" r="1.0" fill="#14B8A6" opacity="0.26"/><circle cx="154.8" cy="155.6" r="1.6" fill="#93A6FF" opacity="0.33"/><circle cx="106.7" cy="37.3" r="0.9" fill="#93A6FF" opacity="0.51"/><circle cx="136.7" cy="21.2" r="1.2" fill="#14B8A6" opacity="0.26"/><circle cx="61.8" cy="22.1" r="0.9" fill="#93A6FF" opacity="0.50"/></g><path d="M 139.9 100.0 L 139.8 107.0 L 135.9 113.1 L 131.0 117.9 L 127.6 123.1 L 124.2 128.8 L 119.3 133.3 L 113.3 136.7 L 106.9 139.2 L 100.0 139.3 L 93.6 136.3 L 88.0 133.1 L 81.7 131.7 L 75.0 129.8 L 69.6 125.5 L 66.1 119.6 L 63.5 113.3 L 62.6 106.6 L 63.9 100.0 L 65.0 93.8 L 64.5 87.1 L 65.2 79.9 L 69.4 74.3 L 75.3 70.6 L 81.3 67.5 L 87.3 65.2 L 93.7 64.4 L 100.0 63.3 L 106.8 61.5 L 114.0 61.7 L 119.7 65.9 L 123.8 71.6 L 127.9 76.6 L 131.9 81.6 L 134.9 87.3 L 137.5 93.4 L 139.9 100.0 Z" fill="none" stroke="#4361EE" stroke-width="1.2" stroke-linejoin="round" filter="url(#glow)"/><path d="M 139.9 100.0 L 139.8 107.0 L 135.9 113.1 L 131.0 117.9 L 127.6 123.1 L 124.2 128.8 L 119.3 133.3 L 113.3 136.7 L 106.9 139.2 L 100.0 139.3 L 93.6 136.3 L 88.0 133.1 L 81.7 131.7 L 75.0 129.8 L 69.6 125.5 L 66.1 119.6 L 63.5 113.3 L 62.6 106.6 L 63.9 100.0 L 65.0 93.8 L 64.5 87.1 L 65.2 79.9 L 69.4 74.3 L 75.3 70.6 L 81.3 67.5 L 87.3 65.2 L 93.7 64.4 L 100.0 63.3 L 106.8 61.5 L 114.0 61.7 L 119.7 65.9 L 123.8 71.6 L 127.9 76.6 L 131.9 81.6 L 134.9 87.3 L 137.5 93.4 L 139.9 100.0 Z" fill="none" stroke="#4361EE" stroke-width="3.5999999999999996" opacity="0.15" stroke-linejoin="round"/></svg>
+<!-- Glow Effect -->
+<div class="absolute inset-0 rounded-full bg-accent-dark/10 blur-3xl opacity-50 pointer-events-none"></div>
+<!-- Shader Embed -->
+<div class="relative w-full h-full rounded-full overflow-hidden border border-border-hairline bg-surface/30">
+<!-- STITCH_SHADER_START:ANIMATION_6 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_6" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_6');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+const vec3 COLOR_INDIGO = vec3(0.2627, 0.3804, 0.9333); // #4361EE
+const vec3 COLOR_AQUA = vec3(0.0784, 0.7216, 0.6510);   // #14B8A6
+const vec3 COLOR_ACCENT_DARK = vec3(0.5765, 0.6510, 1.0); // #93A6FF
+
+float hash(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
+}
+
+void main() {
+    vec2 uv = v_texCoord * 2.0 - 1.0;
+    uv.x *= u_resolution.x / u_resolution.y;
+    
+    float dist = length(uv);
+    float t = u_time * 0.4;
+    
+    // Core glow - very dim for Idle
+    vec3 color = COLOR_INDIGO * 0.08 * exp(-dist * 1.5);
+    
+    // Waveform Ring - Calm fluid motion
+    float radius = 0.55;
+    float angle = atan(uv.y, uv.x);
+    
+    // Smooth, low-frequency wave for "calm drift"
+    float wave = sin(angle * 2.0 + t) * 0.015;
+    wave += sin(angle * 4.0 - t * 0.5) * 0.01;
+    
+    float ringDist = abs(dist - (radius + wave));
+    float ringGlow = exp(-ringDist * 60.0);
+    color += mix(COLOR_INDIGO, COLOR_AQUA, 0.2) * ringGlow * 0.6;
+    
+    // Ambient Particles - Dim and slow
+    for(int i = 0; i < 30; i++) {
+        float fi = float(i);
+        float pAngle = fi * 137.5 + t * 0.05;
+        float pDist = 0.4 + 0.35 * hash(vec2(fi, 1.0)) + 0.05 * sin(t * 0.5 + fi);
+        vec2 pPos = vec2(cos(pAngle), sin(pAngle)) * pDist;
+        
+        float pSize = 0.001 + 0.003 * hash(vec2(fi, 2.0));
+        float pGlow = pSize / length(uv - pPos);
+        
+        // Flickering dim particles
+        float blink = smoothstep(0.3, 0.7, sin(t * 0.8 + fi * 2.0) * 0.5 + 0.5);
+        color += COLOR_ACCENT_DARK * pow(pGlow, 1.4) * 0.3 * blink;
+    }
+    
+    // Falloff to match page background #0E0E16
+    color *= smoothstep(1.2, 0.0, dist);
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_6 -->
+</div>
+</div>
+<!-- Typography / Readout -->
+<div class="flex flex-col items-center gap-1 text-center relative z-10">
+<p class="font-body-16 text-body-16 text-text-secondary lowercase tracking-wide opacity-80">
+                calm continuous drift
+            </p>
+<p class="font-numeral-data text-numeral-data text-text-secondary tracking-widest opacity-60 text-xs">
+                amp 0.02
+            </p>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 fixed bottom-0 w-full h-[bottom-inset] flex justify-around items-center px-edge-margin bg-surface border-t border-border-hairline pb-bottom-inset pt-2">
+<!-- Orb Tab (Active) -->
+<button class="flex flex-col items-center justify-center w-16 h-12 text-accent-dark flex items-center justify-center hover:opacity-80 transition-opacity duration-300 active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="circle_dot" style="font-variation-settings: 'FILL' 1;">radio_button_checked</span>
+</button>
+<!-- Lab Tab (Inactive) -->
+<button class="flex flex-col items-center justify-center w-16 h-12 text-text-hint flex items-center justify-center hover:text-primary transition-colors active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="tune">tune</span>
+</button>
+<!-- Settings Tab (Inactive) -->
+<button class="flex flex-col items-center justify-center w-16 h-12 text-text-hint flex items-center justify-center hover:text-primary transition-colors active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="settings">settings</span>
+</button>
+</nav>
+<script>
+        // Micro-interaction for breathing effect on the text
+        document.addEventListener('DOMContentLoaded', () => {
+            const driftText = document.querySelector('p.font-body-16');
+            if(driftText) {
+                driftText.style.transition = 'opacity 3s ease-in-out';
+                setInterval(() => {
+                    driftText.style.opacity = driftText.style.opacity === '0.8' ? '0.5' : '0.8';
+                }, 3000);
+            }
+        });
+    </script>
+</body></html>

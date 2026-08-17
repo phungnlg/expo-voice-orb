@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Lumen Orb Lab - State Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1f1f27",
+                        "surface-tint": "#bac3ff",
+                        "secondary-fixed": "#71f8e4",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#302f39",
+                        "on-primary": "#00218d",
+                        "success": "#34D98A",
+                        "outline": "#8e8fa1",
+                        "on-primary-container": "#f4f2ff",
+                        "on-secondary-container": "#003f38",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#bac3ff",
+                        "primary-fixed": "#dee1ff",
+                        "inverse-primary": "#2e4edc",
+                        "on-tertiary-fixed-variant": "#793000",
+                        "tertiary-container": "#ba4e00",
+                        "tertiary": "#ffb692",
+                        "surface-inset": "#20202E",
+                        "on-primary-fixed": "#001159",
+                        "surface-dim": "#13131b",
+                        "warning": "#FFC53D",
+                        "secondary": "#4fdbc8",
+                        "surface": "#171722",
+                        "on-tertiary-fixed": "#341100",
+                        "surface-variant": "#34343d",
+                        "tertiary-fixed-dim": "#ffb692",
+                        "primary-container": "#4361ee",
+                        "outline-variant": "#444655",
+                        "inverse-surface": "#e4e1ed",
+                        "danger": "#FF6369",
+                        "background": "#13131b",
+                        "text-hint": "#6E6E82",
+                        "primary": "#bac3ff",
+                        "accent-fill": "#2E45B8",
+                        "text-secondary": "#A0A0B4",
+                        "on-secondary-fixed-variant": "#005048",
+                        "on-surface-variant": "#c4c5d7",
+                        "on-tertiary": "#562000",
+                        "secondary-container": "#04b4a2",
+                        "on-tertiary-container": "#fff1eb",
+                        "on-secondary-fixed": "#00201c",
+                        "surface-container-lowest": "#0d0d15",
+                        "on-primary-fixed-variant": "#0031c4",
+                        "border-hairline": "#2A2A3A",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "on-background": "#e4e1ed",
+                        "accent-dark": "#93A6FF",
+                        "surface-bright": "#393841",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-surface": "#e4e1ed",
+                        "text-primary": "#EAEAF5",
+                        "surface-container-highest": "#34343d",
+                        "surface-container-high": "#292932",
+                        "on-secondary": "#003731",
+                        "surface-container-low": "#1b1b23",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "edge-margin": "20px",
+                        "bottom-inset": "34px",
+                        "base": "8px",
+                        "top-inset": "59px"
+                    },
+                    "fontFamily": {
+                        "title-20": ["Plus Jakarta Sans"],
+                        "body-16": ["Plus Jakarta Sans"],
+                        "display-32": ["Space Grotesk"],
+                        "wordmark-caps": ["Space Grotesk"],
+                        "label-14": ["Plus Jakarta Sans"],
+                        "caption-13": ["Plus Jakarta Sans"],
+                        "numeral-data": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "title-20": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-16": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-32": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "wordmark-caps": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "label-14": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "caption-13": ["13px", { "lineHeight": "18px", "fontWeight": "500" }],
+                        "numeral-data": ["16px", { "lineHeight": "24px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0E0E16; /* Fallback */
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(23, 23, 34, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        /* Orb Animation Styles Placeholder */
+        .orb-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .orb-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(147, 166, 255, 0.4) 0%, rgba(147, 166, 255, 0) 70%);
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+        .orb-core {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #93A6FF, #4361EE);
+            box-shadow: 0 0 20px rgba(147, 166, 255, 0.6);
+            position: relative;
+            z-index: 10;
+        }
+        
+        @keyframes pulse-glow {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Fluid Ring Simulation */
+        .fluid-ring {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border: 2px solid rgba(147, 166, 255, 0.8);
+            border-radius: 40% 60% 60% 40% / 40% 50% 50% 60%;
+            animation: rotate-ring 8s linear infinite;
+        }
+        .fluid-ring:nth-child(2) {
+            width: 85px;
+            height: 85px;
+            border: 2px solid rgba(147, 166, 255, 0.4);
+            border-radius: 50% 50% 40% 60% / 60% 40% 50% 50%;
+            animation: rotate-ring-reverse 6s linear infinite;
+        }
+
+        @keyframes rotate-ring {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes rotate-ring-reverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-text-primary min-h-screen flex flex-col pt-top-inset pb-bottom-inset selection:bg-primary-container selection:text-text-primary">
+<!-- TopAppBar JSON Translated -->
+<header class="fixed top-0 w-full flex justify-between items-center px-edge-margin h-top-inset z-50 bg-background transition-opacity duration-300">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 0;">blur_on</span>
+<span class="font-wordmark-caps text-wordmark-caps text-text-primary tracking-widest">LUMEN</span>
+</div>
+<div class="flex items-center bg-surface-inset border border-border-hairline rounded-full px-3 py-1">
+<span class="font-label-14 text-label-14 text-accent-dark">Listening</span>
+</div>
+</header>
+<main class="flex-1 px-edge-margin flex flex-col gap-8 pb-24 overflow-y-auto">
+<!-- Orb Section -->
+<section class="mt-8 flex flex-col items-center justify-center">
+<div class="orb-container">
+<div class="orb-glow"></div>
+<div class="fluid-ring"></div>
+<div class="fluid-ring"></div>
+<div class="orb-core"></div>
+</div>
+<p class="mt-6 font-caption-13 text-caption-13 text-text-secondary uppercase tracking-widest">Live State</p>
+</section>
+<!-- Triggers Grid -->
+<section>
+<h2 class="font-title-20 text-title-20 mb-4">State Triggers</h2>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface border border-border-hairline rounded-lg py-3 px-4 flex items-center justify-center font-label-14 text-label-14 text-text-secondary hover:border-outline-variant transition-colors">Idle</button>
+<button class="bg-surface border border-border-hairline rounded-lg py-3 px-4 flex items-center justify-center font-label-14 text-label-14 text-text-secondary hover:border-outline-variant transition-colors">Activated</button>
+<button class="bg-[rgba(147,166,255,0.14)] border border-[rgba(147,166,255,0.3)] rounded-lg py-3 px-4 flex items-center justify-center font-label-14 text-label-14 text-accent-dark">Listening</button>
+<button class="bg-surface border border-border-hairline rounded-lg py-3 px-4 flex items-center justify-center font-label-14 text-label-14 text-text-secondary hover:border-outline-variant transition-colors">Processing</button>
+<button class="bg-surface border border-border-hairline rounded-lg py-3 px-4 flex items-center justify-center font-label-14 text-label-14 text-text-secondary hover:border-outline-variant transition-colors">Speaking</button>
+<button class="bg-surface border border-border-hairline rounded-lg py-3 px-4 flex items-center justify-center font-label-14 text-label-14 text-text-secondary hover:border-outline-variant transition-colors">Whisper</button>
+<button class="bg-surface border border-border-hairline rounded-lg py-3 px-4 flex items-center justify-center font-label-14 text-label-14 text-text-secondary hover:border-outline-variant transition-colors col-span-2">Complete</button>
+</div>
+</section>
+<!-- Transition Log -->
+<section class="flex-1">
+<h2 class="font-title-20 text-title-20 mb-4">Transition Log</h2>
+<div class="bg-surface border border-border-hairline rounded-xl p-4 flex flex-col gap-4">
+<div class="flex items-start gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-accent-dark mt-2"></div>
+<div>
+<p class="font-numeral-data text-numeral-data text-text-secondary text-sm">14:02:31</p>
+<p class="font-body-16 text-body-16 text-text-primary">Listening <span class="text-text-hint">→</span> Processing</p>
+<p class="font-caption-13 text-caption-13 text-text-hint mt-1">420ms blend</p>
+</div>
+</div>
+<div class="h-[1px] w-full bg-border-hairline"></div>
+<div class="flex items-start gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-surface-bright mt-2"></div>
+<div>
+<p class="font-numeral-data text-numeral-data text-text-secondary text-sm">14:02:12</p>
+<p class="font-body-16 text-body-16 text-text-primary">Activated <span class="text-text-hint">→</span> Listening</p>
+<p class="font-caption-13 text-caption-13 text-text-hint mt-1">300ms blend</p>
+</div>
+</div>
+<div class="h-[1px] w-full bg-border-hairline"></div>
+<div class="flex items-start gap-3 opacity-50">
+<div class="w-1.5 h-1.5 rounded-full bg-surface-bright mt-2"></div>
+<div>
+<p class="font-numeral-data text-numeral-data text-text-secondary text-sm">14:00:05</p>
+<p class="font-body-16 text-body-16 text-text-primary">Idle <span class="text-text-hint">→</span> Activated</p>
+<p class="font-caption-13 text-caption-13 text-text-hint mt-1">150ms blend</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar JSON Translated -->
+<nav class="fixed bottom-0 w-full h-[80px] pb-safe flex justify-around items-center px-edge-margin bg-surface z-50">
+<!-- Not actively adding border-t to stick to the shell border ban rule where possible unless enforced strictly by JSON, but JSON says border-t. Obeying JSON -->
+<div class="absolute top-0 left-0 w-full h-[1px] bg-border-hairline"></div>
+<button class="flex flex-col items-center justify-center gap-1 text-text-hint hover:text-primary transition-colors active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-[24px]">radio_button_checked</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-accent-dark active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">tune</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 text-text-hint hover:text-primary transition-colors active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+</button>
+</nav>
+</body></html>

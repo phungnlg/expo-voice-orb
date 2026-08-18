@@ -1,8 +1,12 @@
 import {
+  AlphaType,
   Atlas,
+  Blur,
   Canvas,
   Circle,
+  ColorType,
   Group,
+  Mask,
   RadialGradient,
   Skia,
   rect,
@@ -10,8 +14,7 @@ import {
   useRSXformBuffer,
   vec,
 } from '@shopify/react-native-skia';
-import { AlphaType, ColorType } from '@shopify/react-native-skia';
-import type { SkColor } from '@shopify/react-native-skia';
+import type { SkColor, SkImage } from '@shopify/react-native-skia';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { View } from 'react-native';
 import {
@@ -37,7 +40,7 @@ export interface VoiceOrbProps {
   reduceMotion?: boolean;
 }
 
-const SP = 48; // sprite source size (px)
+const SP = 64; // sprite source size (px)
 const CAM_Z = 3.2;
 const FOCAL = 2.3;
 
@@ -52,17 +55,71 @@ function mulberry32(seed: number) {
   };
 }
 
-interface ParticleData {
+interface LayerData {
   dx: Float32Array;
   dy: Float32Array;
   dz: Float32Array;
   radius: Float32Array;
   size: Float32Array;
   seed: Float32Array;
+  colors: SkColor[];
+  count: number;
 }
 
-function buildParticles(count: number) {
-  const rnd = mulberry32(0x1eaf);
+// cosmic palette
+const COSMIC = {
+  deepIndigo: [0.263, 0.38, 0.933],
+  lilac: [0.639, 0.694, 1.0],
+  violet: [0.486, 0.361, 1.0],
+  aqua: [0.078, 0.722, 0.651],
+  magenta: [0.694, 0.361, 1.0],
+  white: [0.85, 0.9, 1.0],
+};
+
+type Vec3 = number[];
+function lerp3(a: Vec3, b: Vec3, t: number): Vec3 {
+  return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+}
+
+interface LayerConfig {
+  frac: number; // share of total particles
+  rMin: number;
+  rMax: number;
+  sizeMin: number;
+  sizeMax: number;
+  alphaMin: number;
+  alphaMax: number;
+  palette: Vec3[]; // colors to sample between
+  spinMul: number; // parallax: rotation speed multiplier
+  spriteExp: number; // sprite softness (lower = softer/blurrier look)
+}
+
+// far -> near. Depth cue is baked into every axis: far particles are larger,
+// softer, dimmer, slower and further out; near particles small, sharp, bright,
+// fast and tight. Rendered back-to-front with increasing sharpness.
+const LAYERS: LayerConfig[] = [
+  {
+    frac: 0.4, rMin: 1.1, rMax: 2.0, sizeMin: 2.2, sizeMax: 4.6,
+    alphaMin: 0.05, alphaMax: 0.18,
+    palette: [COSMIC.violet, COSMIC.deepIndigo, COSMIC.magenta],
+    spinMul: 0.45, spriteExp: 0.75,
+  },
+  {
+    frac: 0.36, rMin: 0.78, rMax: 1.18, sizeMin: 1.3, sizeMax: 2.6,
+    alphaMin: 0.22, alphaMax: 0.55,
+    palette: [COSMIC.deepIndigo, COSMIC.lilac, COSMIC.aqua],
+    spinMul: 1.0, spriteExp: 1.5,
+  },
+  {
+    frac: 0.24, rMin: 0.35, rMax: 0.9, sizeMin: 0.6, sizeMax: 1.4,
+    alphaMin: 0.35, alphaMax: 0.72,
+    palette: [COSMIC.lilac, COSMIC.white, COSMIC.aqua],
+    spinMul: 1.75, spriteExp: 2.6,
+  },
+];
+
+function buildLayer(count: number, cfg: LayerConfig, seedBase: number): LayerData {
+  const rnd = mulberry32(seedBase);
   const dx = new Float32Array(count);
   const dy = new Float32Array(count);
   const dz = new Float32Array(count);
@@ -70,14 +127,6 @@ function buildParticles(count: number) {
   const psize = new Float32Array(count);
   const seed = new Float32Array(count);
   const colors: SkColor[] = [];
-
-  // brand palette
-  const indigo = [0.263, 0.38, 0.933];
-  const lilac = [0.576, 0.651, 1.0];
-  const aqua = [0.078, 0.722, 0.651];
-  const coreN = Math.floor(count * 0.12);
-  const nebulaN = Math.floor(count * 0.34);
-
   for (let i = 0; i < count; i++) {
     const u = rnd() * 2 - 1;
     const theta = rnd() * Math.PI * 2;
@@ -86,41 +135,12 @@ function buildParticles(count: number) {
     dy[i] = u;
     dz[i] = s * Math.sin(theta);
     seed[i] = rnd();
-
-    let r: number;
-    let sz: number;
-    let a: number;
-    let mix: number;
-    if (i < coreN) {
-      r = 0.1 + rnd() * 0.28;
-      sz = 2.6 + rnd() * 2.4;
-      a = 0.55 + rnd() * 0.35;
-      mix = 0.35 + rnd() * 0.4;
-    } else if (i < count - nebulaN) {
-      r = 0.85 + (rnd() - 0.5) * 0.3;
-      sz = 1.2 + rnd() * 1.5;
-      a = 0.35 + rnd() * 0.4;
-      mix = rnd();
-    } else {
-      r = 1.12 + rnd() * 0.7;
-      sz = 0.7 + rnd() * 1.0;
-      a = 0.12 + rnd() * 0.22;
-      mix = 0.5 + rnd() * 0.5;
-    }
-    radius[i] = r;
-    psize[i] = sz;
-    // color: indigo -> lilac by mix, then toward aqua for a share of particles
-    const base = [
-      indigo[0] + (lilac[0] - indigo[0]) * mix,
-      indigo[1] + (lilac[1] - indigo[1]) * mix,
-      indigo[2] + (lilac[2] - indigo[2]) * mix,
-    ];
-    const aq = i % 5 === 0 ? 0.6 : 0;
-    const col = [
-      base[0] + (aqua[0] - base[0]) * aq,
-      base[1] + (aqua[1] - base[1]) * aq,
-      base[2] + (aqua[2] - base[2]) * aq,
-    ];
+    radius[i] = cfg.rMin + rnd() * (cfg.rMax - cfg.rMin);
+    psize[i] = cfg.sizeMin + rnd() * (cfg.sizeMax - cfg.sizeMin);
+    const a = cfg.alphaMin + rnd() * (cfg.alphaMax - cfg.alphaMin);
+    const t = rnd() * (cfg.palette.length - 1);
+    const i0 = Math.floor(t);
+    const col = lerp3(cfg.palette[i0], cfg.palette[Math.min(i0 + 1, cfg.palette.length - 1)], t - i0);
     colors.push(
       Skia.Color(
         `rgba(${Math.round(col[0] * 255)},${Math.round(col[1] * 255)},${Math.round(
@@ -129,13 +149,12 @@ function buildParticles(count: number) {
       ),
     );
   }
-  return { data: { dx, dy, dz, radius, size: psize, seed } as ParticleData, colors };
+  return { dx, dy, dz, radius, size: psize, seed, colors, count };
 }
 
-// One soft radial-glow sprite, reused for every particle via drawAtlas.
-// Built from raw RGBA pixels (a white disc with a soft alpha falloff) so it
-// renders on the main GPU context - an offscreen-surface snapshot does not.
-function makeSprite() {
+// One soft radial-glow sprite. `exp` controls falloff: lower = softer (reads as
+// out-of-focus depth), higher = tighter/sharper (near layer).
+function makeSprite(exp: number): SkImage | null {
   const px = new Uint8Array(SP * SP * 4);
   const c = SP / 2;
   for (let y = 0; y < SP; y++) {
@@ -143,7 +162,7 @@ function makeSprite() {
       const dx = (x + 0.5 - c) / c;
       const dy = (y + 0.5 - c) / c;
       const d = Math.min(1, Math.sqrt(dx * dx + dy * dy));
-      const a = Math.pow(1 - d, 1.7); // soft glow falloff
+      const a = Math.pow(1 - d, exp);
       const o = (y * SP + x) * 4;
       px[o] = 255;
       px[o + 1] = 255;
@@ -151,12 +170,42 @@ function makeSprite() {
       px[o + 3] = Math.round(a * 255);
     }
   }
-  const data = Skia.Data.fromBytes(px);
   return Skia.Image.MakeImage(
     { width: SP, height: SP, colorType: ColorType.RGBA_8888, alphaType: AlphaType.Unpremul },
-    data,
+    Skia.Data.fromBytes(px),
     SP * 4,
   );
+}
+
+// static deep-space starfield scattered across the whole frame (behind the orb)
+function buildStars(count: number, size: number) {
+  const rnd = mulberry32(0x5747);
+  const sprites: ReturnType<typeof rect>[] = [];
+  const transforms = [];
+  const colors: SkColor[] = [];
+  const cx = size / 2;
+  const maxR = size * 0.5;
+  for (let i = 0; i < count; i++) {
+    // scatter within a soft disc (sqrt bias for even areal spread), fade at rim
+    const rr = Math.sqrt(rnd()) * maxR;
+    const ang = rnd() * Math.PI * 2;
+    const x = cx + Math.cos(ang) * rr;
+    const y = cx + Math.sin(ang) * rr;
+    const edgeFade = Math.max(0, 1 - (rr / maxR) ** 2); // 1 center -> 0 rim
+    const s = (0.4 + rnd() * 1.1) / (SP / 6);
+    sprites.push(rect(0, 0, SP, SP));
+    transforms.push(Skia.RSXform(s, 0, x - (s * SP) / 2, y - (s * SP) / 2));
+    const a = (0.15 + rnd() * 0.45) * edgeFade;
+    const tint = rnd() < 0.3 ? COSMIC.aqua : COSMIC.lilac;
+    colors.push(
+      Skia.Color(
+        `rgba(${Math.round(tint[0] * 255)},${Math.round(tint[1] * 255)},${Math.round(
+          tint[2] * 255,
+        )},${a.toFixed(3)})`,
+      ),
+    );
+  }
+  return { sprites, transforms, colors };
 }
 
 const FIELDS: (keyof GalaxyVisual)[] = [
@@ -172,26 +221,30 @@ export function VoiceOrb({
   particleCount = 900,
   reduceMotion = false,
 }: VoiceOrbProps) {
-  const N = Math.max(120, Math.min(1100, particleCount));
-  const { data, sprites, colors, image } = useMemo(() => {
-    const built = buildParticles(N);
-    return {
-      data: built.data,
-      colors: built.colors,
-      sprites: new Array(N).fill(0).map(() => rect(0, 0, SP, SP)),
-      image: makeSprite(),
-    };
-  }, [N]);
+  const N = Math.max(150, Math.min(1200, particleCount));
+
+  const built = useMemo(() => {
+    const counts = LAYERS.map((l) => Math.round(N * l.frac));
+    const layers = LAYERS.map((cfg, i) => buildLayer(counts[i], cfg, 0x1eaf + i * 977));
+    const sprites = LAYERS.map((cfg) => makeSprite(cfg.spriteExp));
+    const spriteRects = layers.map((l) => new Array(l.count).fill(0).map(() => rect(0, 0, SP, SP)));
+    return { layers, sprites, spriteRects, stars: buildStars(70, size) };
+  }, [N, size]);
 
   const center = size / 2;
-  const screenScale = size * 0.44;
+  const screenScale = size * 0.36;
   const sizeK = size * 0.02;
 
-  // particle base data on the UI thread
-  const pd = useSharedValue<ParticleData>(data);
+  // per-layer base data on the UI thread
+  const pd0 = useSharedValue<LayerData>(built.layers[0]);
+  const pd1 = useSharedValue<LayerData>(built.layers[1]);
+  const pd2 = useSharedValue<LayerData>(built.layers[2]);
   useEffect(() => {
-    pd.value = data;
-  }, [data]);
+    pd0.value = built.layers[0];
+    pd1.value = built.layers[1];
+    pd2.value = built.layers[2];
+  }, [built]);
+  const pds = [pd0, pd1, pd2];
 
   // eased parameter vector + target
   const P = useSharedValue<GalaxyVisual>({ ...GALAXY_VISUALS.idle });
@@ -212,7 +265,6 @@ export function VoiceOrb({
     T.value = { ...GALAXY_VISUALS[state] };
   }, [state, transitions]);
 
-  // ease every parameter toward the state target + accumulate rotation
   useFrameCallback((frame) => {
     'worklet';
     const dt = Math.min(0.05, (frame.timeSincePreviousFrame ?? 16) / 1000);
@@ -225,84 +277,134 @@ export function VoiceOrb({
     rotY.value += p.spin * motion * dt;
   }, true);
 
-  // per-particle sprite transforms (position + depth-scaled size), 3D projected
-  const transforms = useRSXformBuffer(N, (val, i) => {
-    'worklet';
-    const d = pd.value;
-    const p = P.value;
-    const time = clock.value / 1000;
-    const motion = rm.value ? 0.28 : 1;
-    const amp = Math.max(0, Math.min(1, amplitude.value)) * p.audioDrive;
+  // one projected-transform buffer per depth layer; spinMul creates parallax
+  const useLayerBuffer = (layerIndex: number, spinMul: number) =>
+    useRSXformBuffer(built.layers[layerIndex].count, (val, i) => {
+      'worklet';
+      const d = pds[layerIndex].value;
+      const p = P.value;
+      const time = clock.value / 1000;
+      const motion = rm.value ? 0.28 : 1;
+      const amp = Math.max(0, Math.min(1, amplitude.value)) * p.audioDrive;
 
-    const r0 = d.radius[i];
-    const turb = p.turbulence * Math.sin(time * 1.7 * motion + d.seed[i] * 6.2831);
-    const pulse = amp * (r0 < 0.45 ? 0.5 : 0.28);
-    const rr = r0 * p.spread * (1 + pulse) + turb;
+      const r0 = d.radius[i];
+      const turb = p.turbulence * Math.sin(time * 1.7 * motion + d.seed[i] * 6.2831);
+      const pulse = amp * (r0 < 0.5 ? 0.5 : 0.26);
+      const rr = r0 * p.spread * (1 + pulse) + turb;
 
-    let x = d.dx[i] * rr;
-    let y = d.dy[i] * rr;
-    let z = d.dz[i] * rr;
+      const x = d.dx[i] * rr;
+      const y = d.dy[i] * rr;
+      const z = d.dz[i] * rr;
 
-    // rotate about Y (spin + inner vortex), then tilt about X
-    const ay = rotY.value + p.swirl * motion * time * (1.15 - r0);
-    const cy = Math.cos(ay);
-    const sy = Math.sin(ay);
-    let x1 = cy * x + sy * z;
-    let z1 = -sy * x + cy * z;
-    const ax = 0.42 + p.tilt * Math.sin(time * 0.3) * 0.6;
-    const cx = Math.cos(ax);
-    const sx = Math.sin(ax);
-    let y1 = cx * y - sx * z1;
-    let z2 = sx * y + cx * z1;
+      const ay = rotY.value * spinMul + p.swirl * motion * time * (1.15 - r0);
+      const cyy = Math.cos(ay);
+      const syy = Math.sin(ay);
+      const x1 = cyy * x + syy * z;
+      const z1 = -syy * x + cyy * z;
+      const ax = 0.42 + p.tilt * Math.sin(time * 0.3) * 0.6;
+      const cxx = Math.cos(ax);
+      const sxx = Math.sin(ax);
+      const y1 = cxx * y - sxx * z1;
+      const z2 = sxx * y + cxx * z1;
 
-    const dist = CAM_Z - z2;
-    const kk = FOCAL / dist;
-    const px = center + x1 * kk * screenScale;
-    const py = center - y1 * kk * screenScale;
-    const diameter = d.size[i] * sizeK * kk * p.pointScale;
-    const scale = diameter / SP;
-    // RSXform: uniform scale, no rotation, centered on (px,py)
-    val.set(scale, 0, px - (scale * SP) / 2, py - (scale * SP) / 2);
-  });
+      const dist = CAM_Z - z2;
+      const kk = FOCAL / dist;
+      const px = center + x1 * kk * screenScale;
+      const py = center - y1 * kk * screenScale;
+      const diameter = d.size[i] * sizeK * kk * p.pointScale;
+      const scale = diameter / SP;
+      val.set(scale, 0, px - (scale * SP) / 2, py - (scale * SP) / 2);
+    });
 
-  const brightness = useDerivedValue(() => Math.max(0.15, P.value.brightness));
-  // core circle stays large enough to never clip the gradient (no hard rim);
-  // the gradient's own falloff + amplitude drive the visible glow size
+  const tf0 = useLayerBuffer(0, LAYERS[0].spinMul);
+  const tf1 = useLayerBuffer(1, LAYERS[1].spinMul);
+  const tf2 = useLayerBuffer(2, LAYERS[2].spinMul);
+  const layerBuffers = [tf0, tf1, tf2];
+
+  const brightness = useDerivedValue(() => Math.max(0.2, P.value.brightness));
   const coreGradR = useDerivedValue(
     () =>
       size *
-      0.34 *
+      0.28 *
       (0.6 + P.value.coreGlow * 0.5) *
       (1 + Math.max(0, Math.min(1, amplitude.value)) * P.value.audioDrive * 0.4),
   );
-  const coreOpacity = useDerivedValue(() => Math.min(0.85, 0.25 + P.value.coreGlow * 0.6));
+  const coreOpacity = useDerivedValue(() => Math.min(0.5, 0.12 + P.value.coreGlow * 0.36));
+  const nebulaOpacity = useDerivedValue(() => 0.25 + P.value.coreGlow * 0.25);
+  // subtle starfield parallax: drift opposite the orb spin
+  const starShift = useDerivedValue(() => [
+    { translateX: Math.sin(rotY.value * 0.4) * (size * 0.012) },
+    { translateY: Math.cos(rotY.value * 0.4) * (size * 0.008) },
+  ]);
 
-  if (!image) return <View style={{ width: size, height: size }} />;
+  const layerBlur = [3.0, 1.1, 0];
+
+  if (built.sprites.some((s) => !s)) return <View style={{ width: size, height: size }} />;
+
+  const vignetteMask = (
+    <Circle cx={center} cy={center} r={size * 0.5}>
+      <RadialGradient
+        c={vec(center, center)}
+        r={size * 0.5}
+        colors={['white', 'white', 'rgba(255,255,255,0)']}
+        positions={[0, 0.55, 0.96]}
+      />
+    </Circle>
+  );
 
   return (
     <View style={{ width: size, height: size }}>
       <Canvas style={{ flex: 1 }}>
-        {/* inner energy core - soft radial glow, no hard edge */}
+        <Mask mode="alpha" mask={vignetteMask}>
+        {/* deep-space nebula backdrop */}
+        <Group opacity={nebulaOpacity} blendMode="plus">
+          <Circle cx={center} cy={center} r={size * 0.5}>
+            <RadialGradient
+              c={vec(center * 0.85, center * 0.8)}
+              r={size * 0.6}
+              colors={['rgba(124,92,255,0.5)', 'rgba(67,97,238,0.25)', 'rgba(14,14,22,0)']}
+              positions={[0, 0.5, 1]}
+            />
+          </Circle>
+        </Group>
+
+        {/* deep-space starfield with slight parallax drift */}
+        <Group transform={starShift} opacity={0.7} blendMode="plus">
+          <Atlas
+            image={built.sprites[2]!}
+            sprites={built.stars.sprites}
+            transforms={built.stars.transforms}
+            colors={built.stars.colors}
+            colorBlendMode="modulate"
+          />
+        </Group>
+
+        {/* inner energy core */}
         <Group opacity={coreOpacity} blendMode="plus">
           <Circle cx={center} cy={center} r={size * 0.5}>
             <RadialGradient
               c={vec(center, center)}
               r={coreGradR}
-              colors={['#B9C6FF', '#4361EE', 'rgba(20,184,166,0.15)', 'rgba(14,14,22,0)']}
-              positions={[0, 0.35, 0.7, 1]}
+              colors={['#9AA8FF', '#4A5BE0', 'rgba(90,70,200,0.18)', 'rgba(14,14,22,0)']}
+              positions={[0, 0.32, 0.7, 1]}
             />
           </Circle>
         </Group>
-        {/* layered particle galaxy, additive */}
-        <Group opacity={brightness} blendMode="plus">
-          <Atlas
-            image={image}
-            sprites={sprites}
-            transforms={transforms}
-            colors={colors}
-            colorBlendMode="modulate"
-          />
-        </Group>
+
+        {/* three depth layers, back-to-front: far (blurred) -> near (sharp) */}
+        {[0, 1, 2].map((li) => (
+          <Group key={li} opacity={brightness} blendMode="plus">
+            {layerBlur[li] > 0 ? <Blur blur={layerBlur[li]} /> : null}
+            <Atlas
+              image={built.sprites[li]!}
+              sprites={built.spriteRects[li]}
+              transforms={layerBuffers[li]}
+              colors={built.layers[li].colors}
+              colorBlendMode="modulate"
+            />
+          </Group>
+        ))}
+       </Mask>
       </Canvas>
     </View>
   );

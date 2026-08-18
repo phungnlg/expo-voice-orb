@@ -1,4 +1,5 @@
 import * as Haptics from 'expo-haptics';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ScrollView,
@@ -19,7 +20,11 @@ import { color, font, radius, spacing } from '../../src/theme';
 type Pane = 'states' | 'amplitude';
 
 export default function Lab() {
-  const [pane, setPane] = useState<Pane>('states');
+  const params = useLocalSearchParams<{ pane?: string }>();
+  const [pane, setPane] = useState<Pane>(params.pane === 'amplitude' ? 'amplitude' : 'states');
+  useEffect(() => {
+    if (params.pane === 'amplitude' || params.pane === 'states') setPane(params.pane);
+  }, [params.pane]);
   const {
     orbState,
     setOrbState,

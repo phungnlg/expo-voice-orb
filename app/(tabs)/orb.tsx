@@ -1,4 +1,5 @@
 import * as Haptics from 'expo-haptics';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -31,6 +32,13 @@ export default function OrbStage() {
     reduceMotion,
     showFps,
   } = useOrbLab();
+
+  // optional deep-link state override, e.g. exp://.../(tabs)/orb?state=speaking
+  const params = useLocalSearchParams<{ state?: string }>();
+  useEffect(() => {
+    const s = params.state as OrbState | undefined;
+    if (s && ORB_STATES.includes(s)) setOrbState(s);
+  }, [params.state]);
 
   const audioActive = ORB_VISUALS[orbState].audioDrive > 0;
   const amplitude = useMockAmplitude({

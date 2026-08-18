@@ -1,66 +1,32 @@
-import React, { useEffect, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, {
-  Easing,
+import {
+  Atlas,
+  Canvas,
+  Circle,
+  Group,
+  RadialGradient,
+  Skia,
+  rect,
+  useClock,
+  useRSXformBuffer,
+  vec,
+} from '@shopify/react-native-skia';
+import { AlphaType, ColorType } from '@shopify/react-native-skia';
+import type { SkColor } from '@shopify/react-native-skia';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { View } from 'react-native';
+import {
   SharedValue,
-  interpolateColor,
-  useAnimatedProps,
-  useAnimatedStyle,
   useDerivedValue,
   useFrameCallback,
   useSharedValue,
-  withSpring,
-  withTiming,
 } from 'react-native-reanimated';
-import Svg, {
-  Circle,
-  Defs,
-  G,
-  Path,
-  RadialGradient,
-  Stop,
-} from 'react-native-svg';
-import { color } from '../theme';
 import {
-  ORB_VISUALS,
+  GALAXY_VISUALS,
+  GalaxyVisual,
   OrbState,
-  OrbVisual,
   TransitionSpec,
   findTransition,
 } from '../orbStates';
-
-const AnimatedPath = Animated.createAnimatedComponent(Path);
-const AnimatedG = Animated.createAnimatedComponent(G);
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-
-const RING_POINTS = 48;
-const BASE_RADIUS = 38;
-
-interface Particle {
-  angle: number;
-  radius: number;
-  size: number;
-  aqua: boolean;
-  opacity: number;
-}
-
-function makeParticles(count: number): Particle[] {
-  // mulberry32 - deterministic field, stable across renders
-  let seed = 20260818;
-  const rnd = () => {
-    seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-  return Array.from({ length: count }, () => ({
-    angle: rnd() * Math.PI * 2,
-    radius: 55 + rnd() * 35,
-    size: 0.8 + rnd() * 1.4,
-    aqua: rnd() < 0.2,
-    opacity: 0.3 + rnd() * 0.7,
-  }));
-}
 
 export interface VoiceOrbProps {
   state: OrbState;
@@ -71,162 +37,273 @@ export interface VoiceOrbProps {
   reduceMotion?: boolean;
 }
 
-/**
- * The animated voice-assistant orb: a circular particle field surrounding a
- * central fluid waveform ring.
- *
- * Every behavioral state is a target vector of visual parameters
- * (ORB_VISUALS). On state change each parameter animates toward its new
- * target with the transition's duration/easing, so states BLEND into each
- * other - there is no hard swap between looping animations. The `amplitude`
- * shared value (normalized 0..1) modulates the ring per frame on the UI
- * thread with zero bridge traffic.
- */
+const SP = 48; // sprite source size (px)
+const CAM_Z = 3.2;
+const FOCAL = 2.3;
+
+// Deterministic RNG so the galaxy is stable across mounts.
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+interface ParticleData {
+  dx: Float32Array;
+  dy: Float32Array;
+  dz: Float32Array;
+  radius: Float32Array;
+  size: Float32Array;
+  seed: Float32Array;
+}
+
+function buildParticles(count: number) {
+  const rnd = mulberry32(0x1eaf);
+  const dx = new Float32Array(count);
+  const dy = new Float32Array(count);
+  const dz = new Float32Array(count);
+  const radius = new Float32Array(count);
+  const psize = new Float32Array(count);
+  const seed = new Float32Array(count);
+  const colors: SkColor[] = [];
+
+  // brand palette
+  const indigo = [0.263, 0.38, 0.933];
+  const lilac = [0.576, 0.651, 1.0];
+  const aqua = [0.078, 0.722, 0.651];
+  const coreN = Math.floor(count * 0.12);
+  const nebulaN = Math.floor(count * 0.34);
+
+  for (let i = 0; i < count; i++) {
+    const u = rnd() * 2 - 1;
+    const theta = rnd() * Math.PI * 2;
+    const s = Math.sqrt(1 - u * u);
+    dx[i] = s * Math.cos(theta);
+    dy[i] = u;
+    dz[i] = s * Math.sin(theta);
+    seed[i] = rnd();
+
+    let r: number;
+    let sz: number;
+    let a: number;
+    let mix: number;
+    if (i < coreN) {
+      r = 0.1 + rnd() * 0.28;
+      sz = 2.6 + rnd() * 2.4;
+      a = 0.55 + rnd() * 0.35;
+      mix = 0.35 + rnd() * 0.4;
+    } else if (i < count - nebulaN) {
+      r = 0.85 + (rnd() - 0.5) * 0.3;
+      sz = 1.2 + rnd() * 1.5;
+      a = 0.35 + rnd() * 0.4;
+      mix = rnd();
+    } else {
+      r = 1.12 + rnd() * 0.7;
+      sz = 0.7 + rnd() * 1.0;
+      a = 0.12 + rnd() * 0.22;
+      mix = 0.5 + rnd() * 0.5;
+    }
+    radius[i] = r;
+    psize[i] = sz;
+    // color: indigo -> lilac by mix, then toward aqua for a share of particles
+    const base = [
+      indigo[0] + (lilac[0] - indigo[0]) * mix,
+      indigo[1] + (lilac[1] - indigo[1]) * mix,
+      indigo[2] + (lilac[2] - indigo[2]) * mix,
+    ];
+    const aq = i % 5 === 0 ? 0.6 : 0;
+    const col = [
+      base[0] + (aqua[0] - base[0]) * aq,
+      base[1] + (aqua[1] - base[1]) * aq,
+      base[2] + (aqua[2] - base[2]) * aq,
+    ];
+    colors.push(
+      Skia.Color(
+        `rgba(${Math.round(col[0] * 255)},${Math.round(col[1] * 255)},${Math.round(
+          col[2] * 255,
+        )},${a.toFixed(3)})`,
+      ),
+    );
+  }
+  return { data: { dx, dy, dz, radius, size: psize, seed } as ParticleData, colors };
+}
+
+// One soft radial-glow sprite, reused for every particle via drawAtlas.
+// Built from raw RGBA pixels (a white disc with a soft alpha falloff) so it
+// renders on the main GPU context - an offscreen-surface snapshot does not.
+function makeSprite() {
+  const px = new Uint8Array(SP * SP * 4);
+  const c = SP / 2;
+  for (let y = 0; y < SP; y++) {
+    for (let x = 0; x < SP; x++) {
+      const dx = (x + 0.5 - c) / c;
+      const dy = (y + 0.5 - c) / c;
+      const d = Math.min(1, Math.sqrt(dx * dx + dy * dy));
+      const a = Math.pow(1 - d, 1.7); // soft glow falloff
+      const o = (y * SP + x) * 4;
+      px[o] = 255;
+      px[o + 1] = 255;
+      px[o + 2] = 255;
+      px[o + 3] = Math.round(a * 255);
+    }
+  }
+  const data = Skia.Data.fromBytes(px);
+  return Skia.Image.MakeImage(
+    { width: SP, height: SP, colorType: ColorType.RGBA_8888, alphaType: AlphaType.Unpremul },
+    data,
+    SP * 4,
+  );
+}
+
+const FIELDS: (keyof GalaxyVisual)[] = [
+  'spread', 'spin', 'swirl', 'turbulence', 'coreGlow',
+  'pointScale', 'brightness', 'aqua', 'audioDrive', 'tilt',
+];
+
 export function VoiceOrb({
   state,
   amplitude,
   transitions,
   size = 320,
-  particleCount = 140,
+  particleCount = 900,
   reduceMotion = false,
 }: VoiceOrbProps) {
-  const particles = useMemo(() => makeParticles(particleCount), [particleCount]);
+  const N = Math.max(120, Math.min(1100, particleCount));
+  const { data, sprites, colors, image } = useMemo(() => {
+    const built = buildParticles(N);
+    return {
+      data: built.data,
+      colors: built.colors,
+      sprites: new Array(N).fill(0).map(() => rect(0, 0, SP, SP)),
+      image: makeSprite(),
+    };
+  }, [N]);
 
-  // animated visual parameter vector
-  const ringAmp = useSharedValue(ORB_VISUALS.idle.ringAmp);
-  const ringSpeed = useSharedValue(ORB_VISUALS.idle.ringSpeed);
-  const ringWidth = useSharedValue(ORB_VISUALS.idle.ringWidth);
-  const ringOpacity = useSharedValue(ORB_VISUALS.idle.ringOpacity);
-  const audioDrive = useSharedValue(ORB_VISUALS.idle.audioDrive);
-  const spread = useSharedValue(ORB_VISUALS.idle.particleSpread);
-  const particleOpacity = useSharedValue(ORB_VISUALS.idle.particleOpacity);
-  const spin = useSharedValue(ORB_VISUALS.idle.particleSpin);
-  const glow = useSharedValue(ORB_VISUALS.idle.glow);
-  const scale = useSharedValue(ORB_VISUALS.idle.scale);
-  const aqua = useSharedValue(ORB_VISUALS.idle.aqua);
-  const processing = useSharedValue(0); // 1 = ring collapses to rotating arc
+  const center = size / 2;
+  const screenScale = size * 0.44;
+  const sizeK = size * 0.02;
 
-  const prevState = useSharedValue<OrbState>('idle');
-
+  // particle base data on the UI thread
+  const pd = useSharedValue<ParticleData>(data);
   useEffect(() => {
-    const spec = findTransition(transitions, prevState.value, state);
-    prevState.value = state;
-    const v: OrbVisual = ORB_VISUALS[state];
-    const animate = (target: number) =>
-      spec.easing === 'spring'
-        ? withSpring(target, { damping: 14, stiffness: 120 })
-        : withTiming(target, {
-            duration: spec.durationMs,
-            easing: Easing.inOut(Easing.ease),
-          });
-    ringAmp.value = animate(v.ringAmp);
-    ringSpeed.value = animate(v.ringSpeed);
-    ringWidth.value = animate(v.ringWidth);
-    ringOpacity.value = animate(v.ringOpacity);
-    audioDrive.value = animate(v.audioDrive);
-    spread.value = animate(v.particleSpread);
-    particleOpacity.value = animate(v.particleOpacity);
-    spin.value = animate(v.particleSpin);
-    glow.value = animate(v.glow);
-    scale.value = animate(v.scale);
-    aqua.value = animate(v.aqua);
-    processing.value = withTiming(state === 'processing' ? 1 : 0, {
-      duration: spec.durationMs,
-      easing: Easing.inOut(Easing.ease),
-    });
+    pd.value = data;
+  }, [data]);
+
+  // eased parameter vector + target
+  const P = useSharedValue<GalaxyVisual>({ ...GALAXY_VISUALS.idle });
+  const T = useSharedValue<GalaxyVisual>({ ...GALAXY_VISUALS.idle });
+  const tau = useSharedValue(0.15);
+  const rm = useSharedValue(reduceMotion ? 1 : 0);
+  const rotY = useSharedValue(0);
+  const clock = useClock();
+
+  const prev = useRef<OrbState>('idle');
+  useEffect(() => {
+    rm.value = reduceMotion ? 1 : 0;
+  }, [reduceMotion]);
+  useEffect(() => {
+    const spec = findTransition(transitions, prev.current, state);
+    prev.current = state;
+    tau.value = (spec.durationMs / 1000) * (spec.easing === 'spring' ? 0.28 : 0.5);
+    T.value = { ...GALAXY_VISUALS[state] };
   }, [state, transitions]);
 
-  // clocks driven on the UI thread
-  const phase = useSharedValue(0); // ring undulation phase
-  const rotation = useSharedValue(0); // particle field rotation (deg)
-  const arcAngle = useSharedValue(0); // processing spinner angle (deg)
-
+  // ease every parameter toward the state target + accumulate rotation
   useFrameCallback((frame) => {
     'worklet';
-    const dt = (frame.timeSincePreviousFrame ?? 16) / 1000;
-    const motion = reduceMotion ? 0.25 : 1;
-    phase.value += dt * ringSpeed.value * Math.PI * 2 * motion;
-    rotation.value = (rotation.value + dt * spin.value * 6 * motion) % 360;
-    arcAngle.value = (arcAngle.value + dt * 220 * motion) % 360;
+    const dt = Math.min(0.05, (frame.timeSincePreviousFrame ?? 16) / 1000);
+    const motion = rm.value ? 0.28 : 1;
+    const k = 1 - Math.exp(-dt / Math.max(0.05, tau.value));
+    const p = { ...P.value };
+    const t = T.value;
+    for (const f of FIELDS) p[f] += (t[f] - p[f]) * k;
+    P.value = p;
+    rotY.value += p.spin * motion * dt;
   }, true);
 
-  const ringProps = useAnimatedProps(() => {
+  // per-particle sprite transforms (position + depth-scaled size), 3D projected
+  const transforms = useRSXformBuffer(N, (val, i) => {
     'worklet';
-    const amp = amplitude.value;
-    const drive = audioDrive.value;
-    const collapse = processing.value;
-    const baseAmp = ringAmp.value * (1 + drive * amp * 2.2);
-    const r0 = BASE_RADIUS * scale.value * (1 + drive * amp * 0.12);
-    let d = '';
-    const sweep = 1 - collapse * 0.72; // processing: ring closes into an arc
-    const start = collapse * ((arcAngle.value * Math.PI) / 180);
-    for (let i = 0; i <= RING_POINTS; i++) {
-      const a = start + (i / RING_POINTS) * Math.PI * 2 * sweep;
-      const wob =
-        baseAmp * Math.sin(a * 5 + phase.value * 1.3) * (1 - collapse) +
-        baseAmp * 0.4 * Math.sin(a * 9 - phase.value * 2) * (1 - collapse);
-      const r = r0 + wob;
-      const x = 100 + r * Math.cos(a);
-      const y = 100 + r * Math.sin(a);
-      d += i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`;
-    }
-    if (collapse < 0.5) d += ' Z';
-    return {
-      d,
-      strokeWidth: ringWidth.value,
-      opacity: ringOpacity.value,
-      stroke: interpolateColor(aqua.value, [0, 1], [color.accent, color.support]),
-    };
+    const d = pd.value;
+    const p = P.value;
+    const time = clock.value / 1000;
+    const motion = rm.value ? 0.28 : 1;
+    const amp = Math.max(0, Math.min(1, amplitude.value)) * p.audioDrive;
+
+    const r0 = d.radius[i];
+    const turb = p.turbulence * Math.sin(time * 1.7 * motion + d.seed[i] * 6.2831);
+    const pulse = amp * (r0 < 0.45 ? 0.5 : 0.28);
+    const rr = r0 * p.spread * (1 + pulse) + turb;
+
+    let x = d.dx[i] * rr;
+    let y = d.dy[i] * rr;
+    let z = d.dz[i] * rr;
+
+    // rotate about Y (spin + inner vortex), then tilt about X
+    const ay = rotY.value + p.swirl * motion * time * (1.15 - r0);
+    const cy = Math.cos(ay);
+    const sy = Math.sin(ay);
+    let x1 = cy * x + sy * z;
+    let z1 = -sy * x + cy * z;
+    const ax = 0.42 + p.tilt * Math.sin(time * 0.3) * 0.6;
+    const cx = Math.cos(ax);
+    const sx = Math.sin(ax);
+    let y1 = cx * y - sx * z1;
+    let z2 = sx * y + cx * z1;
+
+    const dist = CAM_Z - z2;
+    const kk = FOCAL / dist;
+    const px = center + x1 * kk * screenScale;
+    const py = center - y1 * kk * screenScale;
+    const diameter = d.size[i] * sizeK * kk * p.pointScale;
+    const scale = diameter / SP;
+    // RSXform: uniform scale, no rotation, centered on (px,py)
+    val.set(scale, 0, px - (scale * SP) / 2, py - (scale * SP) / 2);
   });
 
-  const fieldProps = useAnimatedProps(() => {
-    'worklet';
-    const s = spread.value * (1 + audioDrive.value * amplitude.value * 0.06);
-    return {
-      transform: [{ rotate: `${rotation.value}deg` }, { scale: s }] as any,
-      opacity: particleOpacity.value,
-    };
-  });
+  const brightness = useDerivedValue(() => Math.max(0.15, P.value.brightness));
+  // core circle stays large enough to never clip the gradient (no hard rim);
+  // the gradient's own falloff + amplitude drive the visible glow size
+  const coreGradR = useDerivedValue(
+    () =>
+      size *
+      0.34 *
+      (0.6 + P.value.coreGlow * 0.5) *
+      (1 + Math.max(0, Math.min(1, amplitude.value)) * P.value.audioDrive * 0.4),
+  );
+  const coreOpacity = useDerivedValue(() => Math.min(0.85, 0.25 + P.value.coreGlow * 0.6));
 
-  const glowStyle = useAnimatedStyle(() => ({
-    opacity: 0.12 + glow.value * 0.5 + audioDrive.value * amplitude.value * 0.15,
-    transform: [{ scale: scale.value * (1 + glow.value * 0.08) }],
-  }));
+  if (!image) return <View style={{ width: size, height: size }} />;
 
   return (
     <View style={{ width: size, height: size }}>
-      <Animated.View style={[StyleSheet.absoluteFill, glowStyle]}>
-        <Svg width={size} height={size} viewBox="0 0 200 200">
-          <Defs>
-            <RadialGradient id="orbGlow" cx="50%" cy="50%" r="50%">
-              <Stop offset="0%" stopColor={color.accent} stopOpacity="0.55" />
-              <Stop offset="55%" stopColor={color.accentDark} stopOpacity="0.18" />
-              <Stop offset="100%" stopColor={color.support} stopOpacity="0" />
-            </RadialGradient>
-          </Defs>
-          <Circle cx="100" cy="100" r="95" fill="url(#orbGlow)" />
-        </Svg>
-      </Animated.View>
-      <Svg width={size} height={size} viewBox="0 0 200 200">
-        <AnimatedG origin="100, 100" animatedProps={fieldProps}>
-          {particles.map((p, i) => (
-            <Circle
-              key={i}
-              cx={100 + p.radius * Math.cos(p.angle)}
-              cy={100 + p.radius * Math.sin(p.angle)}
-              r={p.size}
-              fill={p.aqua ? color.support : color.accentDark}
-              opacity={p.opacity}
+      <Canvas style={{ flex: 1 }}>
+        {/* inner energy core - soft radial glow, no hard edge */}
+        <Group opacity={coreOpacity} blendMode="plus">
+          <Circle cx={center} cy={center} r={size * 0.5}>
+            <RadialGradient
+              c={vec(center, center)}
+              r={coreGradR}
+              colors={['#B9C6FF', '#4361EE', 'rgba(20,184,166,0.15)', 'rgba(14,14,22,0)']}
+              positions={[0, 0.35, 0.7, 1]}
             />
-          ))}
-        </AnimatedG>
-        <AnimatedPath
-          animatedProps={ringProps}
-          fill="none"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      </Svg>
+          </Circle>
+        </Group>
+        {/* layered particle galaxy, additive */}
+        <Group opacity={brightness} blendMode="plus">
+          <Atlas
+            image={image}
+            sprites={sprites}
+            transforms={transforms}
+            colors={colors}
+            colorBlendMode="modulate"
+          />
+        </Group>
+      </Canvas>
     </View>
   );
 }

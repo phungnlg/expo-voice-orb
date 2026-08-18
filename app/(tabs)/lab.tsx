@@ -87,7 +87,7 @@ export default function Lab() {
                 amplitude={amplitude}
                 transitions={transitions}
                 size={130}
-                particleCount={Math.min(particleCount, 90)}
+                particleCount={Math.min(particleCount, 450)}
                 reduceMotion={reduceMotion}
               />
               <Text style={styles.previewLabel}>LIVE STATE</Text>

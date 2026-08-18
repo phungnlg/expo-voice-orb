@@ -38,8 +38,8 @@ export default function Settings() {
           <SliderRow
             label="Particle count"
             value={particleCount}
-            min={40}
-            max={240}
+            min={200}
+            max={1100}
             format={(v) => `${Math.round(v)}`}
             onChange={(v) => setParticleCount(Math.round(v))}
           />

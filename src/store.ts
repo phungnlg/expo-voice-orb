@@ -87,7 +87,7 @@ export const useOrbLab = create<OrbLabStore>((set, get) => ({
       transitions: s.transitions.map((t, i) => (i === index ? { ...t, ...patch } : t)),
     })),
 
-  particleCount: 140,
+  particleCount: 800,
   showFps: true,
   hapticsEnabled: true,
   reduceMotion: false,

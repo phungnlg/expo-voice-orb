@@ -24,7 +24,7 @@ export default function Onboarding() {
           amplitude={amplitude}
           transitions={DEFAULT_TRANSITIONS}
           size={320}
-          particleCount={140}
+          particleCount={950}
         />
       </View>
       <View style={styles.bottom}>

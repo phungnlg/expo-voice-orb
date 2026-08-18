@@ -72,6 +72,53 @@ export const ORB_VISUALS: Record<OrbState, OrbVisual> = {
   },
 };
 
+// 3D galaxy / energy-sphere parameter vector, consumed by the GL renderer.
+// Each state is a target; the renderer eases every field toward its target so
+// states blend into one another instead of hard-swapping between loops.
+export interface GalaxyVisual {
+  spread: number; // shell radius multiplier (breathing size)
+  spin: number; // base rotation speed (rad/s)
+  swirl: number; // tangential vortex speed added to spin (processing)
+  turbulence: number; // per-particle noise displacement amplitude
+  coreGlow: number; // brightness/size of the inner energy core
+  pointScale: number; // particle size multiplier
+  brightness: number; // overall particle brightness
+  aqua: number; // 0..1 indigo->aqua color mix
+  audioDrive: number; // how strongly live amplitude pulses the shell + core
+  tilt: number; // extra axis wobble amount
+}
+
+export const GALAXY_VISUALS: Record<OrbState, GalaxyVisual> = {
+  idle: {
+    spread: 1.0, spin: 0.12, swirl: 0, turbulence: 0.05, coreGlow: 0.45,
+    pointScale: 1.0, brightness: 0.7, aqua: 0.2, audioDrive: 0, tilt: 0.15,
+  },
+  activated: {
+    spread: 1.16, spin: 0.28, swirl: 0.1, turbulence: 0.12, coreGlow: 0.9,
+    pointScale: 1.15, brightness: 1.0, aqua: 0.35, audioDrive: 0, tilt: 0.3,
+  },
+  listening: {
+    spread: 1.08, spin: 0.22, swirl: 0.05, turbulence: 0.14, coreGlow: 0.8,
+    pointScale: 1.1, brightness: 1.0, aqua: 0.5, audioDrive: 1, tilt: 0.25,
+  },
+  processing: {
+    spread: 0.9, spin: 0.35, swirl: 1.6, turbulence: 0.1, coreGlow: 0.7,
+    pointScale: 1.0, brightness: 0.9, aqua: 0.9, audioDrive: 0, tilt: 0.1,
+  },
+  speaking: {
+    spread: 1.2, spin: 0.3, swirl: 0.15, turbulence: 0.22, coreGlow: 1.0,
+    pointScale: 1.2, brightness: 1.0, aqua: 0.6, audioDrive: 1, tilt: 0.35,
+  },
+  whisper: {
+    spread: 0.72, spin: 0.08, swirl: 0, turbulence: 0.04, coreGlow: 0.25,
+    pointScale: 0.85, brightness: 0.4, aqua: 0.25, audioDrive: 0.4, tilt: 0.1,
+  },
+  complete: {
+    spread: 1.0, spin: 0.12, swirl: 0, turbulence: 0.05, coreGlow: 0.45,
+    pointScale: 1.0, brightness: 0.7, aqua: 0.2, audioDrive: 0, tilt: 0.15,
+  },
+};
+
 export type EasingName = 'easeInOut' | 'spring';
 
 export interface TransitionSpec {

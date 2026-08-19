@@ -40,7 +40,7 @@ export interface VoiceOrbProps {
   reduceMotion?: boolean;
 }
 
-const SP = 64; // sprite source size (px)
+const SP = 128; // sprite source size (px) - high-res so upscaled glows stay crisp
 const CAM_Z = 3.2;
 const FOCAL = 2.3;
 
@@ -99,22 +99,22 @@ interface LayerConfig {
 // fast and tight. Rendered back-to-front with increasing sharpness.
 const LAYERS: LayerConfig[] = [
   {
-    frac: 0.4, rMin: 1.1, rMax: 2.0, sizeMin: 2.2, sizeMax: 4.6,
-    alphaMin: 0.05, alphaMax: 0.18,
+    frac: 0.28, rMin: 1.05, rMax: 1.9, sizeMin: 1.8, sizeMax: 3.4,
+    alphaMin: 0.04, alphaMax: 0.13,
     palette: [COSMIC.violet, COSMIC.deepIndigo, COSMIC.magenta],
-    spinMul: 0.45, spriteExp: 0.75,
+    spinMul: 0.5, spriteExp: 0.9,
   },
   {
-    frac: 0.36, rMin: 0.78, rMax: 1.18, sizeMin: 1.3, sizeMax: 2.6,
-    alphaMin: 0.22, alphaMax: 0.55,
+    frac: 0.38, rMin: 0.75, rMax: 1.15, sizeMin: 0.9, sizeMax: 1.9,
+    alphaMin: 0.28, alphaMax: 0.6,
     palette: [COSMIC.deepIndigo, COSMIC.lilac, COSMIC.aqua],
-    spinMul: 1.0, spriteExp: 1.5,
+    spinMul: 1.0, spriteExp: 2.0,
   },
   {
-    frac: 0.24, rMin: 0.35, rMax: 0.9, sizeMin: 0.6, sizeMax: 1.4,
-    alphaMin: 0.35, alphaMax: 0.72,
+    frac: 0.34, rMin: 0.3, rMax: 0.95, sizeMin: 0.45, sizeMax: 1.05,
+    alphaMin: 0.55, alphaMax: 0.98,
     palette: [COSMIC.lilac, COSMIC.white, COSMIC.aqua],
-    spinMul: 1.75, spriteExp: 2.6,
+    spinMul: 1.8, spriteExp: 3.4,
   },
 ];
 
@@ -221,7 +221,7 @@ export function VoiceOrb({
   particleCount = 900,
   reduceMotion = false,
 }: VoiceOrbProps) {
-  const N = Math.max(150, Math.min(1200, particleCount));
+  const N = Math.max(150, Math.min(1500, particleCount));
 
   const built = useMemo(() => {
     const counts = LAYERS.map((l) => Math.round(N * l.frac));
@@ -232,7 +232,7 @@ export function VoiceOrb({
   }, [N, size]);
 
   const center = size / 2;
-  const screenScale = size * 0.36;
+  const screenScale = size * 0.4;
   const sizeK = size * 0.02;
 
   // per-layer base data on the UI thread
@@ -329,7 +329,7 @@ export function VoiceOrb({
       (0.6 + P.value.coreGlow * 0.5) *
       (1 + Math.max(0, Math.min(1, amplitude.value)) * P.value.audioDrive * 0.4),
   );
-  const coreOpacity = useDerivedValue(() => Math.min(0.5, 0.12 + P.value.coreGlow * 0.36));
+  const coreOpacity = useDerivedValue(() => Math.min(0.42, 0.1 + P.value.coreGlow * 0.32));
   const nebulaOpacity = useDerivedValue(() => 0.25 + P.value.coreGlow * 0.25);
   // subtle starfield parallax: drift opposite the orb spin
   const starShift = useDerivedValue(() => [
@@ -337,7 +337,7 @@ export function VoiceOrb({
     { translateY: Math.cos(rotY.value * 0.4) * (size * 0.008) },
   ]);
 
-  const layerBlur = [3.0, 1.1, 0];
+  const layerBlur = [2.0, 0.5, 0];
 
   if (built.sprites.some((s) => !s)) return <View style={{ width: size, height: size }} />;
 

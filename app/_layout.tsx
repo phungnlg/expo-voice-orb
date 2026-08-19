@@ -11,7 +11,12 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { LogBox } from 'react-native';
 import { color } from '../src/theme';
+
+// The demo runs on a debug build; hide the on-screen warning overlay so it
+// never covers the UI. (Dev-only; no effect in a release build.)
+if (__DEV__) LogBox.ignoreAllLogs(true);
 
 export default function RootLayout() {
   const [loaded] = useFonts({
